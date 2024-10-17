@@ -1,0 +1,22 @@
+{
+  "name": "node_react_board",
+  "version": "1.0.0",
+  "description": "practice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GalaxyOpen/node_react_board.git"
+  },
+  "author": "GalaxyOpen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GalaxyOpen/node_react_board/issues"
+  },
+  "homepage": "https://github.com/GalaxyOpen/node_react_board#readme",
+  "dependencies": {
+    "mysql2": "^3.11.3"
+  }
+}
