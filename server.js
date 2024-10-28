@@ -1,11 +1,15 @@
 const express = require('express');
 const mysql = require('mysql2');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5500;
 const cors = require('cors');
 
 app.use(express.json());
 app.use(cors());
+
+app.listen(PORT, ()=>{
+  console.log(`Server running on port ${PORT}`);
+});
 
 // MySQL 연결 설정
 const db = mysql.createConnection({
