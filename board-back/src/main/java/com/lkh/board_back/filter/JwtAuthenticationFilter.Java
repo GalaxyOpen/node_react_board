@@ -28,51 +28,53 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
-        throws ServletException, IOException {
-        
-        try{
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        try {
             String token = parseBearerToken(request);
-        
-            if (token == null){
+
+            if (token == null) {
                 filterChain.doFilter(request, response);
                 return;
             }
-    
+
             String email = jwtProvider.validate(token);
-    
-            if(email == null){
+
+            if (email == null) {
                 filterChain.doFilter(request, response);
                 return;
             }
-    
-            AbstractAuthenticationToken authenticationToken = 
-                new UsernamePasswordAuthenticationToken(email, null, AuthorityUtils.NO_AUTHORITIES);
+
+            AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null,
+                    AuthorityUtils.NO_AUTHORITIES);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            
+
             SecurityContext SecurityContext = SecurityContextHolder.createEmptyContext();
             SecurityContext.setAuthentication(authenticationToken);
-    
+
             SecurityContextHolder.setContext(SecurityContext);
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
-        
+
         filterChain.doFilter(request, response);
     }
 
-    private String parseBearerToken(HttpServletRequest request){
+    private String parseBearerToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         boolean hasAuthorization = StringUtils.hasText(authorization);
 
-        if(!hasAuthorization) return null;
+        if (!hasAuthorization)
+            return null;
 
         boolean isBearer = authorization.startsWith("Bearer ");
-        if(!isBearer) return null;
+        if (!isBearer)
+            return null;
 
         String token = authorization.substring(7);
-        return token; 
-        
+        return token;
+
     }
 
 }

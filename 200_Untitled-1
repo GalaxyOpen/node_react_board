@@ -1,0 +1,21 @@
+Success
+200 
+- 성공 : "SU" / "Success" 
+
+Error
+400 Error
+- 유효성 검증 실패 : "VF"  / "Valdiation failed."
+- 중복된 이메일 : "DE" / "Duplicate Email."
+- 중복된 전화번호 : "DT" / "Duplicate Tel number."
+- 존재하지 않는 유저 : "NU" / "This user does not exist."
+- 존재하지 않는 게시물 : "NB" / "This Board does not exist."
+
+401 Error
+- 로그인 실패 : "SF" / "Login information mismatch."
+- 인증 실패 : "AF" / "Authorization failed."
+
+403 Error 
+- 권한 없음 : "NP" / "Do not have permission."
+
+500 Error 
+- 데이터베이스 에러 : "DBE" / "DateBase Error."
