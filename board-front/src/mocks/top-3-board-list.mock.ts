@@ -11,7 +11,7 @@ const top3BoardListMock: BoardListItem[] = [
         "viewCount": 0,
 		"writeDatetime": "2024.11.04. 10:52:27",
 		"writerNickname": "안녕하세요나는주코야키",
-		"writerProfileImage": null
+		"writerProfileImage": 'https:/www.handmk.com/news/photo/202306/16714_40371_5250.jpg',
     },
     {
 		"boardNumber": 1,
