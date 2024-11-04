@@ -1,0 +1,34 @@
+.board-list-item {
+    padding: 24px;
+    background-color: rgba(255,255,255,1);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    cursor: pointer;
+}
+
+.board-list-item:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.board-list-item-main-box {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+}
+
+.board-list-item-top {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.board-list-item-profile-box {
+    width: 32px;
+    height: 32px;
+    
+}
