@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import BoardItem from 'components/BoardItem';
 import { CommentListMock, favoriteListMock, latestBoardListMock, top3BoardListMock } from 'mocks';
@@ -9,6 +9,9 @@ import InputBox from 'components/InputBox';
 
 
 function App() {
+
+  const [value, setValue] = useState<string>('')
+
   return (
     <>
       {/* {latestBoardListMock.map(boardListItem => <BoardItem boardListItem={boardListItem} />)} */}
@@ -27,7 +30,7 @@ function App() {
 
       </div> */}
 
-      <InputBox />    
+      <InputBox label='이메일' type='text' placeholder='이메일 주소를 입력해주세요' value={value} error={true} setValue={setValue} message={'이메일 주소를 입력해주세요'}/>
 
     </>
   );
