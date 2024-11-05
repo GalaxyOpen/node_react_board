@@ -1,4 +1,11 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "emmet.triggerExpansionOnTab": true,
+    "emmet.includeLanguages": {
+        "html": "html",
+        "javascript": "javascriptreact",
+        "typescript": "typescriptreact"
+}
+
 }
