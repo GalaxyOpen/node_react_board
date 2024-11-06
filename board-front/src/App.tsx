@@ -6,6 +6,7 @@ import Top3Item from 'components/Top3Item';
 import CommentItem from 'components/CommentItem';
 import FavoriteItem from 'components/FavoriteItem';
 import InputBox from 'components/InputBox';
+import Footer from 'layouts/Footer';
 
 
 function App() {
@@ -30,8 +31,8 @@ function App() {
 
       </div> */}
 
-      <InputBox label='이메일' type='text' placeholder='이메일 주소를 입력해주세요' value={value} error={true} setValue={setValue} message={'이메일 주소를 입력해주세요'}/>
-
+      {/* <InputBox label='이메일' type='text' placeholder='이메일 주소를 입력해주세요' value={value} error={true} setValue={setValue} message={'이메일 주소를 입력해주세요'}/> */}
+        <Footer />
     </>
   );
 }
