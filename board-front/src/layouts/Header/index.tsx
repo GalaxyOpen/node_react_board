@@ -62,7 +62,7 @@ export default function Header() {
     },[searchWord])
 
     if(!status)
-    //         render : 검색 버튼 컴포넌튼 렌더링 (클릭 False 상태)        //
+    //         render : 검색 버튼 컴포넌트 렌더링 (클릭 False 상태)        //
     return (
     <div className='icon-button' onClick={onSearchButtonClickHandler}> 
       <div className='icon search-light-icon'></div>
