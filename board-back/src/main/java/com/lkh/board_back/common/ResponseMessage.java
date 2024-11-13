@@ -1,6 +1,6 @@
 package com.lkh.board_back.common;
 
-public interface ResponseMassage {
+public interface ResponseMessage {
         // HTTP STATUS 200 
         String SUCCESS = "Success";
         //  public static final String SUCCESS = "SU";

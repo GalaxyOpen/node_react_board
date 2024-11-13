@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.lkh.board_back.common.ResponseCode;
-import com.lkh.board_back.common.ResponseMassage;
+import com.lkh.board_back.common.ResponseMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class ResponseDTO {
     private String message;
 
     public static ResponseEntity<ResponseDTO> databaseError() {
-        ResponseDTO responseBody = new ResponseDTO(ResponseCode.DATABASE_ERROR, ResponseMassage.DATABASE_ERROR);
+        ResponseDTO responseBody = new ResponseDTO(ResponseCode.DATABASE_ERROR, ResponseMessage.DATABASE_ERROR);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 
