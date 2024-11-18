@@ -20,7 +20,7 @@ public class JwtProvider {
 
     // JWT 생성 메소드
     public String create(String email){
-
+        // amountToAdd(만료기간) : 1시간으로 잡아놓음 
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
         String jwt = Jwts.builder()
