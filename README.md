@@ -27,7 +27,7 @@
     - Getting Started 클릭 
     - Install the Coding Pack for Java - windows 클릭 및 실행 
         - 정상적으로 설치가 되었다면, Debugger for Java 확장과 Extension Pack for Java 등 Java 관련된 확장이 모두 설치됨. 
-- Mysql 공식 홈페이지(https://www.mysql.com)에서 Downloads
+- Mysql 공식 홈페이지(https://www.mysql.com) 에서 Downloads
     - Community Downloads : mysql-installer-community 다운로드
     - 비밀번호를 설정하되, 연습할 때는 매우 쉽게 설정할 것 
 
