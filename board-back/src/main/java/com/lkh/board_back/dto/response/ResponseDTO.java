@@ -21,4 +21,9 @@ public class ResponseDTO {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 
+    public static ResponseEntity<ResponseDTO> validationFailed(){
+        ResponseDTO responseBody = new ResponseDTO(ResponseCode.VALIDATION_FAILED, ResponseMessage.VALIDATION_FAILED);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);        
+    }
+
 }
