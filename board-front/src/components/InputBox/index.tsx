@@ -37,7 +37,7 @@ interface Props{
         <div className='inputbox'>
             <div className='inputbox-label'>{label}</div>
             <div className={error ? 'inputbox-container-error' : 'inputbox-container'}>
-                <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChange} />
+                <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChange} onKeyDown={onKeyDownHandler} />
                 {onButtonClick !== undefined &&
                     <div className='icon-button' onClick={onButtonClick}>
                         { icon !== undefined && (<div className={`icon ${icon}`}></ div>)}

@@ -9,6 +9,8 @@ import { useCookies } from 'react-cookie';
 import { MAIN_PATH } from 'constant';
 import { useNavigate } from 'react-router-dom';
 
+
+
 //       component: 인증 화면 컴포넌트           //
 export default function Authentication() {
 
@@ -16,7 +18,7 @@ export default function Authentication() {
   const [view, setView] = useState<'sign-in'|'sign-up'>('sign-in');
 
   //       state: 쿠키 상태           //
-  const [cookies, setCookies] =useCookies();
+  const [cookies, setCookies] = useCookies();
 
   //      function: 네비게이터 함수         //
   const navigator = useNavigate();
@@ -52,19 +54,27 @@ export default function Authentication() {
         alert('네트워크 이상입니다.')
         return;
       }
+      console.log(responseBody);  // 응답 전체 확인
+
       const { code } = responseBody;
       if(code === 'DBE') alert('데이터베이스 오류입니다.')
       if(code === 'SF' || code ==='VF') setError(true);
       if(code !== 'SU') return;
 
+      // SignInResponseDTO에만 있는 필드 확인
+      if ('token' in responseBody) {
+        const { token, expirationTime } = responseBody as SignInResponseDTO;
+        console.log('Token:', token, 'Expiration Time:', expirationTime);
+      }      
+
       const {token, expirationTime} = responseBody as SignInResponseDTO;
       const now = new Date().getTime();
       const expires = expirationTime ? new Date(now + expirationTime * 1000) : new Date(now + 24 * 60 * 60 * 1000); // 기본값 24시간
-      console.log(expires)
       // const expires = new Date(now + expirationTime * 1000);
-
+      
       setCookies('accessToken', token, {expires, path:MAIN_PATH()});
       navigator(MAIN_PATH());
+      console.log(token)
     }
 
     //        event handler: 이메일 변경 이벤트 처리        //
