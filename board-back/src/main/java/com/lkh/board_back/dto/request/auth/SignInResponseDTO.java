@@ -7,6 +7,9 @@ import com.lkh.board_back.common.ResponseCode;
 import com.lkh.board_back.common.ResponseMessage;
 import com.lkh.board_back.dto.response.ResponseDTO;
 
+import lombok.Getter;
+
+@Getter
 public class SignInResponseDTO extends ResponseDTO {
     private String token;
     private int expirationTime; 

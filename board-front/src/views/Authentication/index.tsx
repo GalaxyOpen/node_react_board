@@ -18,7 +18,8 @@ export default function Authentication() {
   const [view, setView] = useState<'sign-in'|'sign-up'>('sign-in');
 
   //       state: 쿠키 상태           //
-  const [cookies, setCookies] = useCookies();
+  const [cookie, setCookie] = useCookies();
+  console.log("첫번째 쿠키: ", cookie)
 
   //      function: 네비게이터 함수         //
   const navigator = useNavigate();
@@ -64,7 +65,7 @@ export default function Authentication() {
       // SignInResponseDTO에만 있는 필드 확인
       if ('token' in responseBody) {
         const { token, expirationTime } = responseBody as SignInResponseDTO;
-        console.log('Token:', token, 'Expiration Time:', expirationTime);
+        console.log('1번째 Token:', token, 'Expiration Time:', expirationTime);
       }      
 
       const {token, expirationTime} = responseBody as SignInResponseDTO;
@@ -72,9 +73,9 @@ export default function Authentication() {
       const expires = expirationTime ? new Date(now + expirationTime * 1000) : new Date(now + 24 * 60 * 60 * 1000); // 기본값 24시간
       // const expires = new Date(now + expirationTime * 1000);
       
-      setCookies('accessToken', token, {expires, path:MAIN_PATH()});
+      setCookie('accessToken', token, {expires, path:MAIN_PATH()});
       navigator(MAIN_PATH());
-      console.log(token)
+      console.log("responsebody", responseBody)
     }
 
     //        event handler: 이메일 변경 이벤트 처리        //
