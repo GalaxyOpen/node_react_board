@@ -1,4 +1,4 @@
-import { KeyboardEvent, ChangeEvent, Dispatch, SetStateAction, forwardRef } from 'react';
+import { KeyboardEvent, ChangeEvent, forwardRef } from 'react';
 import './style.css'
 
 
@@ -8,7 +8,7 @@ interface Props{
     type: 'text' | 'password';
     placeholder : string;
     value: string;
-    setValue: Dispatch<SetStateAction<string>>
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     error : boolean;
 
     // 변수 뒤에 ?를 붙이면 필수가 아니라는 의미
@@ -24,14 +24,7 @@ interface Props{
 
     //          state : properties         // 
     const {label, type, placeholder, value ,error, icon, message} =props;
-    const {setValue, onButtonClick, onKeyDown} = props;
-
-    //   event handler: input 값 변경 이벤트 처리 함수     // 
-    const onChangeHandler = (event:ChangeEvent<HTMLInputElement>) =>{
-        const value = event.target.value;
-        // 이 구문과 같음 const { value } = event.target;
-        setValue(value); // << 이 구문 추가(24.11.19)
-    }
+    const {onChange, onButtonClick, onKeyDown} = props;
 
     //   event handler: input 키 이벤트 처리 함수     // 
     const onKeyDownHandler = (event : KeyboardEvent<HTMLInputElement>) => {
@@ -44,7 +37,7 @@ interface Props{
         <div className='inputbox'>
             <div className='inputbox-label'>{label}</div>
             <div className={error ? 'inputbox-container-error' : 'inputbox-container'}>
-                <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChangeHandler} />
+                <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChange} />
                 {onButtonClick !== undefined &&
                     <div className='icon-button' onClick={onButtonClick}>
                         { icon !== undefined && (<div className={`icon ${icon}`}></ div>)}
