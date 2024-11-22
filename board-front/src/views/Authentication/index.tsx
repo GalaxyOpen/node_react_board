@@ -222,7 +222,7 @@ export default function Authentication() {
     //        state : 패스워드 에러 메시지 상태          //
     const [passwordErrorMessage, setpasswordErrorMessage] = useState<string>('');
     //        state : 패스워드 확인 에러 메시지 상태          //
-    const [passwordCheckErrorMessage, setpasswordCheckErrorMessage] = useState<string>('');
+    const [passwordCheckErrorMessage, setPasswordCheckErrorMessage] = useState<string>('');
 
     //        state : 닉네임 확인 에러 메시지 상태          //
     const [nicknameErrorMessage, setNicknameErrorMessage] =useState<string>('');
@@ -318,7 +318,7 @@ export default function Authentication() {
       const isEqualPassword = password === passwordCheck;
       if(!isEqualPassword){
         setPasswordCheckError(true);
-        setpasswordCheckErrorMessage('비밀번호가 일치하지 않습니다.');
+        setPasswordCheckErrorMessage('비밀번호가 일치하지 않습니다.');
       }
       if(!isEmailPattern || !isCheckedPassword || !isEqualPassword) return;
       setPage(2);
