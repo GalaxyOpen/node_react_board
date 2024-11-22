@@ -265,6 +265,11 @@ export default function Authentication() {
       setPage(2);
     }
 
+    //          event Handler: 로그인 링크 클릭 이벤트 처리           //
+    const onSignInLinkClickHandler = () =>{
+      setView('sign-in');
+    }
+
     //          event Handler: 이메일 키 다운 이벤트 처리           //
     const onEmailKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) =>{
       if(event.key !== 'Enter') return;
@@ -301,7 +306,7 @@ export default function Authentication() {
           <div className='auth-card-bottom'>
             <div className='black-large-full-button' onClick={onNextButtonClickHandler}>{'다음 단계'}</div>
             <div className='auth-description-box'>
-              <div className='auth-description'>{'이미 계정이 있으신가요?'} <span className='auth-description-link'>{'로그인'}</span></div>
+              <div className='auth-description'>{'이미 계정이 있으신가요?'} <span className='auth-description-link' onClick={onSignInLinkClickHandler}>{'로그인'}</span></div>
             </div>
           </div>
         </div>

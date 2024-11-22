@@ -103,6 +103,13 @@
     font-family: 600; /* 수치를 크게 할수록 굵어짐*/
     line-height: 140%;
 }
+.auth-card-page{
+    color: rgba(0,0,0,0.7);
+
+    font-size:24px;
+    font-family: 600; /* 수치를 크게 할수록 굵어짐*/
+    line-height: 140%;    
+}
 
 .auth-card-bottom{
     display: flex;
