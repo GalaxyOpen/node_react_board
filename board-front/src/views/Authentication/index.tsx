@@ -175,7 +175,7 @@ export default function Authentication() {
     
 
     //        state : 페이지 번호 상태          //
-    const [page, setPage] = useState<1 | 2>(2);
+    const [page, setPage] = useState<1 | 2>(1);
     
     //        state : 이메일 상태          //
     const [email, setEmail] = useState<string>('');
@@ -311,7 +311,7 @@ export default function Authentication() {
         setEmailErrorMessage('이메일 주소 포맷이 맞지 않습니다.')
       }
       const isCheckedPassword = password.trim().length > 8
-      if(isCheckedPassword){
+      if(!isCheckedPassword){
         setPasswordError(true);
         setpasswordErrorMessage('비밀번호는 8자 이상 입력해주세요.');
       }
@@ -320,7 +320,7 @@ export default function Authentication() {
         setPasswordCheckError(true);
         setpasswordCheckErrorMessage('비밀번호가 일치하지 않습니다.');
       }
-      if(!isEmailPattern || isCheckedPassword || !isEqualPassword) return;
+      if(!isEmailPattern || !isCheckedPassword || !isEqualPassword) return;
       setPage(2);
     }
 
