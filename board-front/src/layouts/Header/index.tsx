@@ -51,7 +51,6 @@ export default function Header() {
     //          state: 검색 버튼 요소 참조 상태           //
     const searchButtonRef = useRef<HTMLDivElement | null>(null);
 
-
     //          state: 검색 버튼 상태                 //
     const [status, setStatus] = useState<boolean>(false);
 
@@ -122,28 +121,28 @@ export default function Header() {
       navigate(USER_PATH(email));
     };
 
-    //          event handler: 마이페이지 버튼 클릭 이벤트 처리 함수            //
+    //          event handler: 로그아웃 버튼 클릭 이벤트 처리 함수            //
     const onSignOutButtonClickHandler = () => {
       resetLoginUser();
-      navigate(AUTH_PATH());
+      setCookie('accessToken','',{ path: MAIN_PATH(), expires: new Date() });
+      navigate(MAIN_PATH());
     };    
 
     //          event handler: Login 버튼 클릭 이벤트 처리 함수            //
-    
     const onSignInPageButtonClickHandler = () => {
       navigate(AUTH_PATH());
     };
 
     //          Render : 로그아웃 버튼 컴포넌트 렌더링          //
     if (isLogin && userEmail === loginUser?.email)
-    return <div className='white-button' onClick={onSignOutButtonClickHandler}>{'로그아웃'} </div>;     
+    return <div className='white-button' onClick={onSignOutButtonClickHandler}>{'로그아웃'}</div>;     
 
     //          Render : 마이페이지 버튼 컴포넌트 렌더링          //
     if (isLogin)
-    return <div className='white-button' onClick={onMyPageButtonClickHandler}>{'마이페이지'} </div>;
+    return <div className='white-button' onClick={onMyPageButtonClickHandler}>{'마이페이지'}</div>;
 
     //          Render : 로그인 버튼 컴포넌트 렌더링          //
-    return <div className='black-button' onClick={onSignInPageButtonClickHandler}>{'로그인'} </div>;
+    return <div className='black-button' onClick={onSignInPageButtonClickHandler}>{'로그인'}</div>;
 
   };
   //          component: 업로드 버튼 컴포넌트 렌더링       //
@@ -184,6 +183,11 @@ export default function Header() {
     const isUserPage = pathname.startsWith(USER_PATH(''));
     setUserPage(isUserPage);
   }, [pathname])
+
+  //          effect: login user가 변경될 때마다 실행될 함수          //
+  useEffect(()=>{
+    setLogin(loginUser !== null);
+  }, [loginUser])
 
 
   //          Render : 헤더 레이아웃 렌더링          //

@@ -1,4 +1,4 @@
-import User from "types/interface/user.interface";
+import { User } from "types/interface";
 import { create } from "zustand";
 
 interface LoginUserStore {
