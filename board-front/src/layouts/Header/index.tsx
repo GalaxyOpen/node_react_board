@@ -9,19 +9,14 @@ import BoardDetail from 'views/Board/Detail';
 
 //          Component : 헤더 레이아웃           //
 export default function Header() {
-
   //          state : 로그인 유저 상태              //
   const { loginUser, setLoginUser, resetLoginUser } = useLoginUserStore();
-
   //          state : pate 유저               //
   const { pathname } = useLocation();
-
   //          state: cookie 상태                //
   const [cookies, setCookie] = useCookies();
-
   //          state : 로그인 상태         //
   const [isLogin, setLogin] = useState<Boolean>(false);
-
   //          state : 인증 페이지 상태         //
   const [isAuthPage, setAuthPage] = useState<Boolean>(false);
   //          state : 메인 페이지 상태         //
@@ -36,7 +31,6 @@ export default function Header() {
   const [isBoardUpdatePage, setBoardUpdatePage] = useState<Boolean>(false);
   //          state : 유저 페이지 상태         //
   const [isUserPage, setUserPage] = useState<Boolean>(false);
-
 
   //          function: 네비게이트 함수            //
   const navigate = useNavigate();
@@ -65,6 +59,7 @@ export default function Header() {
       const value=event.target.value;
       setWord(value);
     }
+
     //         event handler : 검색어 키 이벤트 처리 함수        //
     const onSearchWordKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) =>{
       if (event.key !== 'Enter') return;
@@ -88,7 +83,7 @@ export default function Header() {
         setStatus(true)
       }
 
-    },[searchWord])
+    },[searchWord]);
 
     if(!status)
     //         render : 검색 버튼 컴포넌트 렌더링 (클릭 False 상태)        //
@@ -107,8 +102,8 @@ export default function Header() {
         </div>
       </div>
     );
-
   }
+  
   //          component: 마이페이지 버튼 컴포넌트 렌더링       //
   const MyPageButton = () =>{
     //          state : userEmail path variable 상태          //
@@ -117,9 +112,11 @@ export default function Header() {
     //          event handler: 마이페이지 버튼 클릭 이벤트 처리 함수            //
     const onMyPageButtonClickHandler = () => {
       if (!loginUser) return;
-      const {email} = loginUser;
+      const { email } = loginUser;
       navigate(USER_PATH(email));
     };
+    console.log('userEmail:', userEmail);
+    console.log('loginUser?.email:', loginUser?.email);    
 
     //          event handler: 로그아웃 버튼 클릭 이벤트 처리 함수            //
     const onSignOutButtonClickHandler = () => {
@@ -134,8 +131,9 @@ export default function Header() {
     };
 
     //          Render : 로그아웃 버튼 컴포넌트 렌더링          //
-    if (isLogin && userEmail === loginUser?.email)
-    return <div className='white-button' onClick={onSignOutButtonClickHandler}>{'로그아웃'}</div>;     
+    if (isLogin && userEmail === loginUser?.email) 
+    return <div className='white-button' onClick={onSignOutButtonClickHandler}>{'로그아웃'}</div>; 
+      
 
     //          Render : 마이페이지 버튼 컴포넌트 렌더링          //
     if (isLogin)
@@ -149,13 +147,12 @@ export default function Header() {
   const UploadButton = () =>{
 
     //         state : 게시물 상태          //
-    const { title, content, boardImageFileList } = useBoardStore();
+    const { title, content, boardImageFileList, resetBoard } = useBoardStore();
 
     //          event handler : 업로드 버튼 클릭 이벤트 처리 함수           //
     const onUploadButtonClickHandler = () =>{
 
     }
-
 
     //          Render : 업로드 버튼 컴포넌트 렌더링          //
     if(title && content)
@@ -188,7 +185,6 @@ export default function Header() {
   useEffect(()=>{
     setLogin(loginUser !== null);
   }, [loginUser])
-
 
   //          Render : 헤더 레이아웃 렌더링          //
   return (
