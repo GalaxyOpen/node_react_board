@@ -31,7 +31,7 @@ export default function BoardWrite() {
       <div className='board-write-container'>
         <div className='board-write-box'>
           <div className='board-write-title-box'>
-            <input className='board-write-title-box' type='text' placeholder='제목을 작성해주세요.' value={title}/>
+            <input className='board-write-title-input' type='text' placeholder='제목을 작성해주세요.' />
           </div>
           <div className='divider'></div>
           <div className='board-write-content-box'>
