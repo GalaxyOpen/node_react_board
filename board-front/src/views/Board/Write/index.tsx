@@ -31,11 +31,11 @@ export default function BoardWrite() {
       <div className='board-write-container'>
         <div className='board-write-box'>
           <div className='board-write-title-box'>
-            <input className='board-write-title-input' type='text' placeholder='제목을 작성해주세요.' />
+            <input className='board-write-title-input' type='text' placeholder='제목을 작성해주세요.' value={title}/>
           </div>
           <div className='divider'></div>
           <div className='board-write-content-box'>
-            <textarea ref={contentRef} className='board-write-conent-textarea' placeholder='본문을 작성해주세요.' value={content}/>
+            <textarea ref={contentRef} className='board-write-conent-textarea' placeholder='본문을 작성해주세요.' value={content} />
             <div className='icon-button'>
               <div className='icon image-box-light-icon'></div>
             </div>
@@ -43,11 +43,19 @@ export default function BoardWrite() {
           </div>
           <div className='board-write-images-box'>
             <div className='board-write-image-box'>
-              <img className='board-write-image' />
+              <img className='board-write-image' src='https://i.pinimg.com/736x/97/57/2c/97572c63a126665e527666d97df414f2.jpg'/>
               <div className='icon-button image-close'>
                 <div className='icon close-icon'></div>
               </div>
             </div>
+            
+            <div className='board-write-image-box'>
+              <img className='board-write-image' src='https://i.pinimg.com/736x/15/30/cb/1530cb71902e348bc69990d08fbc9d6f.jpg'/>
+              <div className='icon-button image-close'>
+                <div className='icon close-icon'></div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
