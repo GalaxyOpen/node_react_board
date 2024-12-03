@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.lkh.board_back.dto.request.board.PostBoardRequestDTO;
 import com.lkh.board_back.dto.response.ResponseDTO;
+import com.lkh.board_back.dto.response.board.GetBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostBoardResponseDTO;
 import com.lkh.board_back.entity.BoardEntity;
 import com.lkh.board_back.entity.ImageEntity;
 import com.lkh.board_back.repository.BoardRepository;
 import com.lkh.board_back.repository.ImageRepository;
 import com.lkh.board_back.repository.UserRepository;
+import com.lkh.board_back.repository.resultSet.GetBoardResultSet;
 import com.lkh.board_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,31 @@ public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
+
+    @Override
+    public ResponseEntity<? super GetBoardResponseDTO> getBoard(Integer boardNumber) {
+
+        GetBoardResultSet resultSet = null;
+        List<ImageEntity> imageEntities = new ArrayList<>();
+
+        try {
+
+            resultSet = boardRepository.getBoard(boardNumber);
+            if(resultSet == null) return GetBoardResponseDTO.noExistBoard();
+
+            imageEntities = imageRepository.findByBoardNumber(boardNumber);
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            boardEntity.increaseViewCount(); // 조회수 증가 메소드 
+            boardRepository.save(boardEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDTO.databaseError();
+        }
+
+        return GetBoardResponseDTO.success(resultSet, imageEntities);
+    }    
     
     
     @Override
@@ -56,5 +83,8 @@ public class BoardServiceImplement implements BoardService {
         }
         return PostBoardResponseDTO.success();
     }
+
+
+
     
 }
