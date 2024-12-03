@@ -26,7 +26,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/{boardNumber}")
-    public ResponseEntity<? super GetBoardResponseDTO> getBoard(@PathVariable("boardNumber") Integer boardNumber){
+    public ResponseEntity<? super GetBoardResponseDTO> getBoard(
+        @PathVariable("boardNumber") Integer boardNumber
+        ) {
         ResponseEntity<? super GetBoardResponseDTO> response = boardService.getBoard(boardNumber);
         return response;
     }
