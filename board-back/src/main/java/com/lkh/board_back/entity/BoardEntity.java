@@ -47,9 +47,17 @@ public class BoardEntity {
         this.viewCount = 0;
         this.writerEmail = email;
     }
-
+    // 조회수 증가로직 
     public void increaseViewCount() {
         this.viewCount++;
+    }
+    // 좋아요 눌렀을 때 좋아요 증가로직 
+    public void increaseFavoriteCount() {
+        this.favoriteCount++;
+    }
+    // 좋아요가 이미 있는 좋아요 눌렀을 때 좋아요 감소로직 
+    public void decreaseFavoriteCount(){
+        this.favoriteCount--;
     }
     
 }
