@@ -9,7 +9,7 @@ import com.lkh.board_back.repository.resultSet.GetBoardResultSet;
 
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
-    
+
     BoardEntity findByBoardNumber(Integer boardNumber);
 
     @Query( // 게시물 상세 불러오기 쿼리문. 단순히 boardEntity만 가져올 수 없으므로(UserEntity도 있기 때문) nativeQuery문을 작성해준다. 
