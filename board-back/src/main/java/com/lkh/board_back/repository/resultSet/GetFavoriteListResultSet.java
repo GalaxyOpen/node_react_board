@@ -1,6 +1,6 @@
 package com.lkh.board_back.repository.resultSet; 
 
-public interface GetFavoriteListResponseDTO {
+public interface GetFavoriteListResultSet {
     String getEmail();
     String getNickname();
     String getProfileImage();
