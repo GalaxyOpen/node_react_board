@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.lkh.board_back.dto.request.board.PostBoardRequestDTO;
 import com.lkh.board_back.dto.response.ResponseDTO;
 import com.lkh.board_back.dto.response.board.GetBoardResponseDTO;
+import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
 import com.lkh.board_back.dto.response.board.PostBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PutFavoriteResponseDTO;
 import com.lkh.board_back.entity.BoardEntity;
@@ -19,6 +20,7 @@ import com.lkh.board_back.repository.FavoriteRepository;
 import com.lkh.board_back.repository.ImageRepository;
 import com.lkh.board_back.repository.UserRepository;
 import com.lkh.board_back.repository.resultSet.GetBoardResultSet;
+import com.lkh.board_back.repository.resultSet.GetFavoriteListResultSet;
 import com.lkh.board_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -56,7 +58,24 @@ public class BoardServiceImplement implements BoardService {
 
         return GetBoardResponseDTO.success(resultSet, imageEntities);
     }    
-    
+    @Override
+    public ResponseEntity<? super GetFavoriteListResponseDTO> getFavoriteList(Integer boardNumber) {
+
+        List<GetFavoriteListResultSet> resultSets = new ArrayList<>();
+
+        try{
+
+            boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
+            if(!existedBoard) return GetFavoriteListResponseDTO.noExistBoard();
+
+            resultSets = favoriteRepository.getFavoriteList(boardNumber);
+
+        } catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDTO.databaseError();
+        }
+        return GetFavoriteListResponseDTO.success(resultSets);
+    }
     
     @Override
     public ResponseEntity<? super PostBoardResponseDTO> postBoard(PostBoardRequestDTO DTO, String email) {
@@ -87,7 +106,6 @@ public class BoardServiceImplement implements BoardService {
         }
         return PostBoardResponseDTO.success();
     }
-
 
     @Override
     public ResponseEntity<? super PutFavoriteResponseDTO> putFavorite(Integer boardNumber, String email) {
@@ -120,7 +138,4 @@ public class BoardServiceImplement implements BoardService {
 
         return PutFavoriteResponseDTO.success();
     }
-
-
-    
 }
