@@ -9,6 +9,7 @@ import com.lkh.board_back.common.ResponseCode;
 import com.lkh.board_back.common.ResponseMessage;
 import com.lkh.board_back.dto.object.FavoriteListItem;
 import com.lkh.board_back.dto.response.ResponseDTO;
+import com.lkh.board_back.repository.resultSet.GetFavoriteListResultSet;
 
 import lombok.Getter;
 
@@ -17,12 +18,13 @@ public class GetFavoriteListResponseDTO extends ResponseDTO{
     
     private List<FavoriteListItem> favoriteList; 
 
-    private GetFavoriteListResponseDTO(){
+    private GetFavoriteListResponseDTO(List<GetFavoriteListResultSet> resultSets){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+        this.favoriteList = FavoriteListItem.copyList(resultSets);
     }
 
-    public static ResponseEntity<GetFavoriteListResponseDTO> success() {
-        GetFavoriteListResponseDTO result = new GetFavoriteListResponseDTO(); 
+    public static ResponseEntity<GetFavoriteListResponseDTO> success(List<GetFavoriteListResultSet> resultSets) {
+        GetFavoriteListResponseDTO result = new GetFavoriteListResponseDTO(resultSets); 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
