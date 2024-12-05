@@ -12,6 +12,6 @@ import lombok.Setter;
 public class PostCommentRequestDTO {
 
     @NotBlank // int나 boolean 같은 건 못씀.
-    private String comment;
+    private String content;
     
 }
