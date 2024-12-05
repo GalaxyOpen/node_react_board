@@ -11,14 +11,14 @@ import lombok.Getter;
 
 @Getter
 
-public class PostCommentReponseDTO extends ResponseDTO{
+public class PostCommentResponseDTO extends ResponseDTO{
     
-    private PostCommentReponseDTO () {
+    private PostCommentResponseDTO () {
         super (ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<PostCommentReponseDTO> success () {
-        PostCommentReponseDTO result = new PostCommentReponseDTO();
+    public static ResponseEntity<PostCommentResponseDTO> success () {
+        PostCommentResponseDTO result = new PostCommentResponseDTO();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

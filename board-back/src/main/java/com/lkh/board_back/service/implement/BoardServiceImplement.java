@@ -26,7 +26,6 @@ import com.lkh.board_back.repository.UserRepository;
 import com.lkh.board_back.repository.resultSet.GetBoardResultSet;
 import com.lkh.board_back.repository.resultSet.GetFavoriteListResultSet;
 import com.lkh.board_back.service.BoardService;
-import com.mysql.cj.protocol.ExportControlled;
 
 import lombok.RequiredArgsConstructor;
 
