@@ -10,6 +10,7 @@ import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
 import com.lkh.board_back.dto.response.board.PostBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostCommentResponseDTO;
 import com.lkh.board_back.dto.response.board.PutFavoriteResponseDTO;
+import com.lkh.board_back.dto.response.board.IncreaseViewCountResponseDTO;
 
 public interface BoardService {
     ResponseEntity<? super GetBoardResponseDTO> getBoard(Integer boardNumber); // 게시물 상세의 URL을 확인해보면 pathvariable로 boardNumber를 받아오고 있기 때문. 
@@ -18,6 +19,6 @@ public interface BoardService {
     ResponseEntity<? super PostBoardResponseDTO> postBoard(PostBoardRequestDTO DTO, String email);
     ResponseEntity<? super PostCommentResponseDTO> postComment(PostCommentRequestDTO DTO, Integer boardNumber, String email);
     ResponseEntity<? super PutFavoriteResponseDTO> putFavorite(Integer boardNumber, String email);
-
+    ResponseEntity<? super IncreaseViewCountResponseDTO> increaseViewCount(Integer boardNumber);
     
 }

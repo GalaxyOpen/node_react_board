@@ -12,6 +12,7 @@ import com.lkh.board_back.dto.response.ResponseDTO;
 import com.lkh.board_back.dto.response.board.GetBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.GetCommentListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
+import com.lkh.board_back.dto.response.board.IncreaseViewCountResponseDTO;
 import com.lkh.board_back.dto.response.board.PostBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostCommentResponseDTO;
 import com.lkh.board_back.dto.response.board.PutFavoriteResponseDTO;
@@ -54,10 +55,6 @@ public class BoardServiceImplement implements BoardService {
             if(resultSet == null) return GetBoardResponseDTO.noExistBoard();
 
             imageEntities = imageRepository.findByBoardNumber(boardNumber);
-
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            boardEntity.increaseViewCount(); // 조회수 증가 메소드 
-            boardRepository.save(boardEntity);
 
         }catch (Exception exception){
             exception.printStackTrace();
@@ -188,6 +185,22 @@ public class BoardServiceImplement implements BoardService {
         }
 
         return PutFavoriteResponseDTO.success();
+    }
+    @Override
+    public ResponseEntity<? super IncreaseViewCountResponseDTO> increaseViewCount(Integer boardNumber) {
+        
+        try {
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return IncreaseViewCountResponseDTO.noExistBoard();
+
+            boardEntity.increaseViewCount(); // 조회수 증가 메소드 
+            boardRepository.save(boardEntity);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDTO.databaseError();
+        }
+
+        return IncreaseViewCountResponseDTO.success();
     }
 
 }

@@ -10,19 +10,29 @@ import defaultProfileImage from 'assets/image/default-profile-image.png';
 import { useLoginUserStore } from 'stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BOARD_PATH, BOARD_UPDATE_PATH, MAIN_PATH, USER_PATH } from 'constant';
+import { getBoardRequest, increaseViewCountRequest } from 'apis';
+import { ResponseDTO } from 'apis/response';
+import GetBoardResponseDTO from 'apis/response/board/get-board.response.DTO';
+import { IncresaeViewCountResponseDTO } from 'apis/response/board';
 
 //       component: 게시물 상세 화면 컴포넌트           //
 export default function BoardDetail() {
 
   //         state : 게시물 번호 path variable 상태         // 
   const { boardNumber } = useParams();
+  //        state : 로그인 유저 상태        //
+  const { loginUser } = useLoginUserStore();  
 
   //         function : 네비게이트 함수         // 
   const navigator = useNavigate();
-
-  //        state : 로그인 유저 상태        //
-  const { loginUser } = useLoginUserStore();
-  
+  //         function : increase view count response 처리 함수        //
+  const increaseViewCountResponse = (responseBody: IncresaeViewCountResponseDTO | ResponseDTO | null) =>{
+    if(!responseBody) return;
+    const { code } = responseBody;
+    if (code === 'NB') alert('존재하지 않는 게시물입니다.');
+    if (code === 'DBE') alert('데이터베이스 오류입니다.');
+  } 
+    
   //       component: 게시물 상세 상단 컴포넌트           //
   const BoardDetailTop = () =>{
 
@@ -31,6 +41,20 @@ export default function BoardDetail() {
 
     //        state : more 버튼 상태        //
     const [showMore, setShowMore] = useState<Boolean>(false);
+
+    //         function : get board response 처리 함수        //
+    const getBoardResponse = (responseBody: GetBoardResponseDTO | ResponseDTO | null) =>{
+      if(!responseBody) return;
+      const { code } = responseBody;
+      if(code === "NB") alert('존재하지 않는 게시물입니다.');
+      if(code === "DBE") alert('데이터베이스 오류입니다.');
+      if(code !== "SU") {
+        navigator(MAIN_PATH());
+        return;
+      } 
+      const board: Board = { ...responseBody as GetBoardResponseDTO } ;
+      setBoard(board);
+    }
 
     //        event handler : 닉네임 클릭 이벤트 처리        //
     const onNicknameClickHandler = () =>{
@@ -60,7 +84,11 @@ export default function BoardDetail() {
 
     //        effect: 게시물 번호 path variable이 바뀔 때 마다 게시물 불러오기         // 
     useEffect(() =>{
-      setBoard(boardMock);
+      if (!boardNumber) {
+        navigator(MAIN_PATH());
+        return;
+      }
+      getBoardRequest(boardNumber).then(getBoardResponse);
     }, [boardNumber])
 
     //        render : 게시물 상세 화면 컴포넌트 렌더링      //
@@ -217,6 +245,18 @@ export default function BoardDetail() {
       </div>
     );
   };
+
+  //        effect : 게시물 path variable이 바뀔 때마다 게시물 번호 조회 수 증가         //
+  let effectFlag = true;
+  useEffect(() => {
+    if(!boardNumber) return;
+    if(effectFlag){
+      effectFlag = false;
+      return;
+    }
+
+    increaseViewCountRequest(boardNumber).then(increaseViewCountResponse);
+  }, [boardNumber])
 
   //        render : 게시물 상세 화면 컴포넌트 렌더링      //
   return (

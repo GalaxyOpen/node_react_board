@@ -4,10 +4,9 @@ import { SignInResponseDTO, SignUpResponseDTO } from './response/auth';
 import { ResponseDTO } from './response';
 import { GetSignInUserResponseDTO } from './response/user';
 import { PostBoardRequestDTO } from './request/board';
-import { PostBoardResponseDTO } from './response/board';
+import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO } from './response/board';
 
 const DOMAIN = 'http://localhost:4000';
-
 const API_DOMAIN = `${DOMAIN}/api/v1`;
 
 const authorization = (accessToken:string) => {
@@ -45,7 +44,37 @@ export const signUpRequest = async (requestBody: SignUpRequestDTO) =>{
     return result
 }
 
+const GET_BOARD_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}`; // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
+const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string ) => `${API_DOMAIN}/board/${boardNumber}/increase-view-count`; // 조회 수 4개 증가 방지용 API 
 const POST_BOARD_URL = () =>`${API_DOMAIN}/board`;
+// 게시물 상세 페이지 특정 게시물 불러오기 API 연동
+export const getBoardRequest = async (boardNumber: number | string) =>{
+    const result = await axios.get(GET_BOARD_URL(boardNumber))
+    .then(response=>{
+        const responseBody: GetBoardResponseDTO = response.data;
+        return responseBody;
+    })
+    .catch(error=>{
+        if(!error.response) return null;
+        const responseBody: ResponseDTO = error.response.data;
+        return responseBody;
+    })
+    return result;  
+}
+
+export const increaseViewCountRequest = async (boardNumber: number | string) =>{
+    const result = await axios.get(INCREASE_VIEW_COUNT_URL(boardNumber))
+        .then(response =>{
+            const responseBody: IncresaeViewCountResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error =>{
+            if(!error.response) return null;
+            const responseBody : ResponseDTO = error.response.data;
+            return responseBody;            
+        })
+    return result;    
+}
 
 export const postBoardRequest = async (requestBody: PostBoardRequestDTO, accessToken:string)=>{
     const result = await axios.post(POST_BOARD_URL(), requestBody, authorization(accessToken))
