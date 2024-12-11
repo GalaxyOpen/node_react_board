@@ -32,11 +32,11 @@ export default function BoardDetail() {
     if (code === 'NB') alert('존재하지 않는 게시물입니다.');
     if (code === 'DBE') alert('데이터베이스 오류입니다.');
   } 
-    
+
   //       component: 게시물 상세 상단 컴포넌트           //
   const BoardDetailTop = () =>{
 
-    //        state : more 버튼 상태        //
+    //        state : board 상태        //
     const [board, setBoard] = useState<Board | null >(null);
 
     //        state : more 버튼 상태        //
@@ -91,7 +91,7 @@ export default function BoardDetail() {
       getBoardRequest(boardNumber).then(getBoardResponse);
     }, [boardNumber])
 
-    //        render : 게시물 상세 화면 컴포넌트 렌더링      //
+    //        render : 게시물 상세 상단 화면 컴포넌트 렌더링      //
     if(!board) return <></>    
     return (
       <div id='board-detail-top'>
@@ -247,15 +247,14 @@ export default function BoardDetail() {
   };
 
   //        effect : 게시물 path variable이 바뀔 때마다 게시물 번호 조회 수 증가         //
-  let effectFlag = true;
+  let effectFlag = false;
   useEffect(() => {
+    console.log("Effect triggered with boardNumber:", boardNumber);
     if(!boardNumber) return;
-    if(effectFlag){
-      effectFlag = false;
-      return;
-    }
-
+    if(effectFlag) return;
+    
     increaseViewCountRequest(boardNumber).then(increaseViewCountResponse);
+    effectFlag =true;
   }, [boardNumber])
 
   //        render : 게시물 상세 화면 컴포넌트 렌더링      //

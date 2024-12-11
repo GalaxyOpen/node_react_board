@@ -50,15 +50,15 @@ const POST_BOARD_URL = () =>`${API_DOMAIN}/board`;
 // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
 export const getBoardRequest = async (boardNumber: number | string) =>{
     const result = await axios.get(GET_BOARD_URL(boardNumber))
-    .then(response=>{
-        const responseBody: GetBoardResponseDTO = response.data;
-        return responseBody;
-    })
-    .catch(error=>{
+        .then(response=>{
+            const responseBody: GetBoardResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error=>{
         if(!error.response) return null;
-        const responseBody: ResponseDTO = error.response.data;
-        return responseBody;
-    })
+            const responseBody: ResponseDTO = error.response.data;
+            return responseBody;
+        })
     return result;  
 }
 

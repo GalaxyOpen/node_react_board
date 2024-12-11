@@ -145,5 +145,6 @@
             "italic": false
         },
     ],
+    "java.debug.settings.onBuildFailureProceed": true,
 
 }
