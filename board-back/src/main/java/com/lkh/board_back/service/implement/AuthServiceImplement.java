@@ -29,7 +29,6 @@ public class AuthServiceImplement implements AuthService {
 
     @Override
     public ResponseEntity<? super SignUpResponseDTO> signUp(SignUpRequestDTO dto) {
-
         
         try{
         
@@ -52,8 +51,6 @@ public class AuthServiceImplement implements AuthService {
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity); // userEntity를 통해 데이터베이스에다 저장까지 완료가 됨. 
             
-
-
         } catch (Exception exception){
             exception.printStackTrace();
             return ResponseDTO.databaseError();
@@ -86,5 +83,4 @@ public class AuthServiceImplement implements AuthService {
         }
         return SignInResponseDTO.success(token);
     }
-    
 }

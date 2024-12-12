@@ -5,6 +5,7 @@ import { ResponseDTO } from './response';
 import { GetSignInUserResponseDTO } from './response/user';
 import { PostBoardRequestDTO } from './request/board';
 import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO } from './response/board';
+import { request } from 'http';
 
 const DOMAIN = 'http://localhost:4000';
 const API_DOMAIN = `${DOMAIN}/api/v1`;
@@ -27,6 +28,7 @@ export const signInRequest = async (requestBody: SignInRequestDTO) => {
             const responseBody: ResponseDTO = error.response.data;
             return responseBody;
         })
+        console.log('Request Body: ', requestBody);
     return result;    
 }
 
@@ -37,11 +39,11 @@ export const signUpRequest = async (requestBody: SignUpRequestDTO) =>{
             return responseBody;
         })
         .catch(error =>{
-            if(!error.resonse.data) return null;
+            if(!error.response.data) return null;
             const responseBody: ResponseDTO = error.response.data;
             return responseBody;
         });
-    return result
+    return result;
 }
 
 const GET_BOARD_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}`; // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
