@@ -4,7 +4,7 @@ import { SignInResponseDTO, SignUpResponseDTO } from './response/auth';
 import { ResponseDTO } from './response';
 import { GetSignInUserResponseDTO } from './response/user';
 import { PostBoardRequestDTO } from './request/board';
-import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO } from './response/board';
+import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO, GetFavoriteListResponseDTO } from './response/board';
 import { request } from 'http';
 
 const DOMAIN = 'http://localhost:4000';
@@ -48,6 +48,7 @@ export const signUpRequest = async (requestBody: SignUpRequestDTO) =>{
 
 const GET_BOARD_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}`; // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
 const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string ) => `${API_DOMAIN}/board/${boardNumber}/increase-view-count`; // 조회 수 4개 증가 방지용 API 
+const GET_FAVORITE_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite-list}`;
 const POST_BOARD_URL = () =>`${API_DOMAIN}/board`;
 // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
 export const getBoardRequest = async (boardNumber: number | string) =>{
@@ -77,6 +78,20 @@ export const increaseViewCountRequest = async (boardNumber: number | string) =>{
         })
     return result;    
 }
+
+export const getFavortieListRequest = async (boardNumber: number | string) =>{
+    const result = await axios.get(GET_FAVORITE_LIST_URL(boardNumber))
+        .then(response =>{
+            const responseBody: GetFavoriteListResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error=>{
+            if(!error.response) return null;
+            const responseBody : ResponseDTO = error.resopnse.data;
+            return responseBody;
+        });
+    return result;
+}   
 
 export const postBoardRequest = async (requestBody: PostBoardRequestDTO, accessToken:string)=>{
     const result = await axios.post(POST_BOARD_URL(), requestBody, authorization(accessToken))
