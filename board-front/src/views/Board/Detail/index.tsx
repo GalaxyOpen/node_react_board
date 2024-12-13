@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css'
 import FavoriteItem from 'components/FavoriteItem';
 import { Board, CommentListItem, FavoriteListItem } from 'types/interface';
-import { boardMock, CommentListMock, favoriteListMock } from 'mocks';
+import { CommentListMock, favoriteListMock } from 'mocks';
 import CommentItem from 'components/CommentItem';
 import Pagination from 'components/Pagination';
 
@@ -14,6 +14,8 @@ import { getBoardRequest, increaseViewCountRequest } from 'apis';
 import { ResponseDTO } from 'apis/response';
 import GetBoardResponseDTO from 'apis/response/board/get-board.response.DTO';
 import { IncresaeViewCountResponseDTO } from 'apis/response/board';
+
+import dayjs from 'dayjs';
 
 //       component: 게시물 상세 화면 컴포넌트           //
 export default function BoardDetail() {
@@ -44,6 +46,13 @@ export default function BoardDetail() {
 
     //        state : more 버튼 상태        //
     const [showMore, setShowMore] = useState<Boolean>(false);
+
+    //         function : date time format(dayjs) 처리 함수        //
+    const getWriteDatetimeFormat = () =>{
+      if(!board) return '';
+      const date = dayjs(board.writeDateTime);
+      return date.format('YYYY. MM. DD.');
+    }
 
     //         function : get board response 처리 함수        //
     const getBoardResponse = (responseBody: GetBoardResponseDTO | ResponseDTO | null) =>{
@@ -112,7 +121,7 @@ export default function BoardDetail() {
               <div className='board-detail-writer-profile-image' style={{backgroundImage: `url(${board.writerProifileImage ? board.writerProifileImage : defaultProfileImage})`}}></div>
               <div className='board-detail-writer-nickname' onClick={onNicknameClickHandler}>{board.writerNickname}</div>
               <div className='board-detail-info-divider'>{'\|'}</div>
-              <div className='board-detail-writer-date'>{board.writeDateTime}</div>
+              <div className='board-detail-writer-date'>{getWriteDatetimeFormat()}</div>
             </div>
             {isWriter &&
             <div className='icon-button' onClick={onMoreButtonClickHandler}>
@@ -245,6 +254,7 @@ export default function BoardDetail() {
           <div className='board-detail-bottom-comment-pagination-box'>
             <Pagination />
           </div>
+          {loginUser !== null && 
           <div className='board-detail-bottom-comment-input-box'>
             <div className='board-detail-bottom-comment-input-container'>
               <textarea ref={commentRef} className='board-detail-bottom-comment-textarea' placeholder='댓글을 작성해주세요.' value={comment} onChange={onCommentChangeHandler} />
@@ -253,6 +263,8 @@ export default function BoardDetail() {
               </div>
             </div>
           </div>
+          }
+          
         </div>
         }
       </div>
