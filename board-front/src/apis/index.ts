@@ -27,7 +27,7 @@ export const signInRequest = async (requestBody: SignInRequestDTO) => {
             if (!error.response.data) return null;
             const responseBody: ResponseDTO = error.response.data;
             return responseBody;
-        })
+        });
         console.log('Request Body: ', requestBody);
     return result;    
 }
@@ -48,7 +48,7 @@ export const signUpRequest = async (requestBody: SignUpRequestDTO) =>{
 
 const GET_BOARD_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}`; // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
 const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string ) => `${API_DOMAIN}/board/${boardNumber}/increase-view-count`; // 조회 수 4개 증가 방지용 API 
-const GET_FAVORITE_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite-list}`;
+const GET_FAVORITE_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite-list`;
 const POST_BOARD_URL = () =>`${API_DOMAIN}/board`;
 // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
 export const getBoardRequest = async (boardNumber: number | string) =>{
@@ -61,7 +61,7 @@ export const getBoardRequest = async (boardNumber: number | string) =>{
         if(!error.response) return null;
             const responseBody: ResponseDTO = error.response.data;
             return responseBody;
-        })
+        });
     return result;  
 }
 
@@ -75,11 +75,11 @@ export const increaseViewCountRequest = async (boardNumber: number | string) =>{
             if(!error.response) return null;
             const responseBody : ResponseDTO = error.response.data;
             return responseBody;            
-        })
+        });
     return result;    
 }
 
-export const getFavortieListRequest = async (boardNumber: number | string) =>{
+export const getFavoriteListRequest = async (boardNumber: number | string) =>{
     const result = await axios.get(GET_FAVORITE_LIST_URL(boardNumber))
         .then(response =>{
             const responseBody: GetFavoriteListResponseDTO = response.data;
@@ -87,7 +87,7 @@ export const getFavortieListRequest = async (boardNumber: number | string) =>{
         })
         .catch(error=>{
             if(!error.response) return null;
-            const responseBody : ResponseDTO = error.resopnse.data;
+            const responseBody : ResponseDTO = error.response.data;
             return responseBody;
         });
     return result;
@@ -103,7 +103,7 @@ export const postBoardRequest = async (requestBody: PostBoardRequestDTO, accessT
             if (!error.response) return null;
             const responseBody : ResponseDTO = error.response.data;
             return responseBody;
-        })
+        });
     return result;    
 }
 
@@ -119,7 +119,7 @@ export const getSignInUserRequest = async (accessToken: string) =>{
             if (!error.response) return null;
             const responseBody: ResponseDTO =error.response.data;
             return responseBody;
-        })
+        });
     return result;    
 }
 const FILE_DOMAIN = `${DOMAIN}/file`;
@@ -136,6 +136,6 @@ export const fileUploadRequest = async (data:FormData) =>{
         })
         .catch(error =>{
             return null;
-        })
+        });
     return result;    
 }

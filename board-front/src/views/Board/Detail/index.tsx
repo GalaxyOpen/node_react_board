@@ -10,10 +10,10 @@ import defaultProfileImage from 'assets/image/default-profile-image.png';
 import { useLoginUserStore } from 'stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BOARD_PATH, BOARD_UPDATE_PATH, MAIN_PATH, USER_PATH } from 'constant';
-import { getBoardRequest, increaseViewCountRequest } from 'apis';
+import { getBoardRequest, getFavoriteListRequest, increaseViewCountRequest } from 'apis';
 import { ResponseDTO } from 'apis/response';
 import GetBoardResponseDTO from 'apis/response/board/get-board.response.DTO';
-import { IncresaeViewCountResponseDTO } from 'apis/response/board';
+import { GetFavoriteListResponseDTO, IncresaeViewCountResponseDTO } from 'apis/response/board';
 
 import dayjs from 'dayjs';
 
@@ -128,7 +128,6 @@ export default function BoardDetail() {
               <div className='icon more-icon'></div>
             </div>            
             }
-
             {showMore && 
             <div className='board-detail-more-box'>
               <div className='board-detail-update-button' onClick={onUpdateButtonClickHandler}>{'수정'}</div>
@@ -168,6 +167,18 @@ export default function BoardDetail() {
     //        state : 댓글 상태         // 
     const [comment, setComment] = useState<string>('');
 
+    //        function : Get Favorite List response 처리 함수        //
+    const getFavoriteListResponse = (responseBody: GetFavoriteListResponseDTO | ResponseDTO | null) =>{
+      if(!responseBody) return;
+      const { code } = responseBody ;
+      if(code === "NB") alert('존재하지 않는 게시물입니다.');
+      if(code === "DBE") alert('데이터베이스 오류입니다.');
+      if(code !== 'SU') return;
+
+      const { favoriteList } = responseBody as GetFavoriteListResponseDTO;
+      setFavoriteList(favoriteList);
+    }
+
     //        event handler : 좋아요 클릭 이벤트 처리        //
     const onFavoriteClickHandler = () =>{
       setFavorite(!isFavorite)
@@ -196,7 +207,8 @@ export default function BoardDetail() {
 
     //         effect : 게시물 번호 path Variable 바뀔 때마다 좋아요 및 댓글 리스트 불러오기          //
     useEffect(() =>{
-      setFavoriteList(favoriteListMock);
+      if(!boardNumber) return;
+      getFavoriteListRequest(boardNumber).then(getFavoriteListResponse);
       setCommentList(CommentListMock);
     },[boardNumber]);
 
