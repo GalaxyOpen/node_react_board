@@ -2,7 +2,6 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css'
 import FavoriteItem from 'components/FavoriteItem';
 import { Board, CommentListItem, FavoriteListItem } from 'types/interface';
-import { CommentListMock, favoriteListMock } from 'mocks';
 import CommentItem from 'components/CommentItem';
 import Pagination from 'components/Pagination';
 
