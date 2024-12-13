@@ -177,6 +177,13 @@ export default function BoardDetail() {
 
       const { favoriteList } = responseBody as GetFavoriteListResponseDTO;
       setFavoriteList(favoriteList);
+
+      if (!loginUser){
+        setFavorite(false);
+        return;
+      } 
+      const isFavorite = favoriteList.findIndex(favorite => favorite.email === loginUser.email) !== -1;
+      setFavorite(isFavorite);
     }
 
     //        event handler : 좋아요 클릭 이벤트 처리        //
