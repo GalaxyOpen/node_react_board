@@ -10,12 +10,13 @@ import defaultProfileImage from 'assets/image/default-profile-image.png';
 import { useLoginUserStore } from 'stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BOARD_PATH, BOARD_UPDATE_PATH, MAIN_PATH, USER_PATH } from 'constant';
-import { getBoardRequest, getFavoriteListRequest, increaseViewCountRequest } from 'apis';
+import { getBoardRequest, GetCommentListRequest, getFavoriteListRequest, increaseViewCountRequest } from 'apis';
 import { ResponseDTO } from 'apis/response';
 import GetBoardResponseDTO from 'apis/response/board/get-board.response.DTO';
-import { GetFavoriteListResponseDTO, IncresaeViewCountResponseDTO } from 'apis/response/board';
+import { GetCommentListResponseDTO, GetFavoriteListResponseDTO, IncresaeViewCountResponseDTO } from 'apis/response/board';
 
 import dayjs from 'dayjs';
+import { response } from 'express';
 
 //       component: 게시물 상세 화면 컴포넌트           //
 export default function BoardDetail() {
@@ -186,6 +187,18 @@ export default function BoardDetail() {
       setFavorite(isFavorite);
     }
 
+    //        function : Get Comment List response 처리 함수        //
+    const getCommentListResponse = (responseBody: GetCommentListResponseDTO | ResponseDTO | null) =>{
+      if(!responseBody) return;
+      const { code } = responseBody;
+      if(code === "NB") alert('존재하지 않는 게시물입니다.');
+      if(code === "DBE") alert('데이터베이스 오류입니다.');
+      if(code !== 'SU') return;
+
+      const {commentList } = responseBody as GetCommentListResponseDTO;
+      setCommentList(commentList);
+    }
+
     //        event handler : 좋아요 클릭 이벤트 처리        //
     const onFavoriteClickHandler = () =>{
       setFavorite(!isFavorite)
@@ -216,7 +229,7 @@ export default function BoardDetail() {
     useEffect(() =>{
       if(!boardNumber) return;
       getFavoriteListRequest(boardNumber).then(getFavoriteListResponse);
-      setCommentList(CommentListMock);
+      GetCommentListRequest(boardNumber).then(getCommentListResponse);
     },[boardNumber]);
 
     //        render : 게시물 상세 화면 컴포넌트 렌더링      //
