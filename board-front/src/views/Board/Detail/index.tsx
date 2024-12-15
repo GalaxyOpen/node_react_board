@@ -15,7 +15,6 @@ import GetBoardResponseDTO from 'apis/response/board/get-board.response.DTO';
 import { GetCommentListResponseDTO, GetFavoriteListResponseDTO, IncresaeViewCountResponseDTO } from 'apis/response/board';
 
 import dayjs from 'dayjs';
-import { response } from 'express';
 
 //       component: 게시물 상세 화면 컴포넌트           //
 export default function BoardDetail() {
