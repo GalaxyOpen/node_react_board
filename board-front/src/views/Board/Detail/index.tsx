@@ -9,12 +9,13 @@ import defaultProfileImage from 'assets/image/default-profile-image.png';
 import { useLoginUserStore } from 'stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BOARD_PATH, BOARD_UPDATE_PATH, MAIN_PATH, USER_PATH } from 'constant';
-import { getBoardRequest, GetCommentListRequest, getFavoriteListRequest, increaseViewCountRequest } from 'apis';
+import { getBoardRequest, GetCommentListRequest, getFavoriteListRequest, increaseViewCountRequest, putFavoriteRequest } from 'apis';
 import { ResponseDTO } from 'apis/response';
 import GetBoardResponseDTO from 'apis/response/board/get-board.response.DTO';
-import { GetCommentListResponseDTO, GetFavoriteListResponseDTO, IncresaeViewCountResponseDTO } from 'apis/response/board';
+import { GetCommentListResponseDTO, GetFavoriteListResponseDTO, IncresaeViewCountResponseDTO, PutFavoriteResponseDTO } from 'apis/response/board';
 
 import dayjs from 'dayjs';
+import { useCookies } from 'react-cookie';
 
 //       component: 게시물 상세 화면 컴포넌트           //
 export default function BoardDetail() {
@@ -23,6 +24,8 @@ export default function BoardDetail() {
   const { boardNumber } = useParams();
   //        state : 로그인 유저 상태        //
   const { loginUser } = useLoginUserStore();  
+  //        state : 쿠키 상태         //
+  const [cookies, setCookies] = useCookies();
 
   //         function : 네비게이트 함수         // 
   const navigator = useNavigate();
@@ -52,7 +55,6 @@ export default function BoardDetail() {
       const date = dayjs(board.writeDateTime);
       return date.format('YYYY. MM. DD.');
     }
-
     //         function : get board response 처리 함수        //
     const getBoardResponse = (responseBody: GetBoardResponseDTO | ResponseDTO | null) =>{
       if(!responseBody) return;
@@ -152,7 +154,6 @@ export default function BoardDetail() {
 
     //        state : 댓글 textarea 참조 상태         //
     const commentRef = useRef<HTMLTextAreaElement | null>(null);
-    
     //        state : 좋아요 리스트 상태        //
     const [favoriteList, setFavoriteList] = useState<FavoriteListItem[]>([]);
     //        state : 댓글 리스트 상태(임시)        //
@@ -184,7 +185,6 @@ export default function BoardDetail() {
       const isFavorite = favoriteList.findIndex(favorite => favorite.email === loginUser.email) !== -1;
       setFavorite(isFavorite);
     }
-
     //        function : Get Comment List response 처리 함수        //
     const getCommentListResponse = (responseBody: GetCommentListResponseDTO | ResponseDTO | null) =>{
       if(!responseBody) return;
@@ -199,15 +199,32 @@ export default function BoardDetail() {
 
     //        event handler : 좋아요 클릭 이벤트 처리        //
     const onFavoriteClickHandler = () =>{
-      setFavorite(!isFavorite)
+      if(!boardNumber || !loginUser || !cookies.accessToken) return;
+      putFavoriteRequest(boardNumber, cookies.accessToken).then(putFavoriteResponse);
     }
+    //        function : put favorite resopnse 처리 함수 
+    const putFavoriteResponse = (responseBody : PutFavoriteResponseDTO | ResponseDTO | null )=>{
+      if(!responseBody) return;
+      const { code } = responseBody;
+      if(code === "VF") alert('잘못된 접근입니다.');
+      if(code === "NB") alert('존재하지 않는 게시물입니다.');
+      if(code === "NU") alert('존재하지 않는 유저입니다.');
+      if(code === "NB") alert('존재하지 않는 게시물입니다.');
+      if(code === "AF") alert('인증에 실패했습니다.');
+      if(code === "DBE") alert('데이터베이스 오류입니다.');
+      if(code !== "SU" ) return;
+
+      if(!boardNumber) return;
+      getFavoriteListRequest(boardNumber).then(getFavoriteListResponse);
+    }
+
     //        event handler : 좋아요 상자 보기 클릭 이벤트 처리        //
     const onShowFavoriteClickHandler = () =>{
-      setShowFavorite(!showFavorite)
+      setShowFavorite(!showFavorite);
     }
     //        event handler : 댓글 상자 보기 클릭 이벤트 처리        //
     const onShowCommentClickHandler = () =>{
-      setShowComment(!showComment)
+      setShowComment(!showComment);
     }
     //        event handler : 댓글 작성 버튼 클릭 이벤트 처리        //
     const onCommentSubmitButtonClickHandler = () =>{
