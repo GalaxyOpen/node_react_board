@@ -3,7 +3,7 @@ import { SignInRequestDTO, SignUpRequestDTO } from './request/auth';
 import { SignInResponseDTO, SignUpResponseDTO } from './response/auth';
 import { ResponseDTO } from './response';
 import { GetSignInUserResponseDTO } from './response/user';
-import { PostBoardRequestDTO } from './request/board';
+import { PostBoardRequestDTO, PostCommentRequestDTO } from './request/board';
 import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO, GetFavoriteListResponseDTO, GetCommentListResponseDTO, PutFavoriteResponseDTO } from './response/board';
 import { request } from 'http';
 import { response } from 'express';
@@ -51,8 +51,9 @@ const GET_BOARD_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${
 const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string ) => `${API_DOMAIN}/board/${boardNumber}/increase-view-count`; // 조회 수 4개 증가 방지용 API 
 const GET_FAVORITE_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite-list`;
 const GET_COMMENT_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/comment-list`;
-const PUT_FAVORITE_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite`;
 const POST_BOARD_URL = () =>`${API_DOMAIN}/board`;
+const POST_COMMENT_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/comment`
+const PUT_FAVORITE_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite`;
 // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
 export const getBoardRequest = async (boardNumber: number | string) =>{
     const result = await axios.get(GET_BOARD_URL(boardNumber))
@@ -122,6 +123,20 @@ export const postBoardRequest = async (requestBody: PostBoardRequestDTO, accessT
             return responseBody;
         });
     return result;    
+}
+
+export const postCommentRequest = async (boardNumber : number | string, requestBody: PostCommentRequestDTO, accessToken: string) =>{
+    const result = await axios.post(POST_COMMENT_URL(boardNumber), requestBody, authorization(accessToken))
+        .then(response =>{
+            const responseBody: PutFavoriteResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error =>{
+            if (!error.response) return null;
+            const responseBody: ResponseDTO =error.response.data;
+            return responseBody;
+        })
+    return result;
 }
 
 export const putFavoriteRequest = async (boardNumber : number | string, accessToken: string) =>{
