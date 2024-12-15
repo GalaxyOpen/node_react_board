@@ -4,7 +4,7 @@ import { SignInResponseDTO, SignUpResponseDTO } from './response/auth';
 import { ResponseDTO } from './response';
 import { GetSignInUserResponseDTO } from './response/user';
 import { PostBoardRequestDTO, PostCommentRequestDTO } from './request/board';
-import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO, GetFavoriteListResponseDTO, GetCommentListResponseDTO, PutFavoriteResponseDTO } from './response/board';
+import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO, GetFavoriteListResponseDTO, GetCommentListResponseDTO, PutFavoriteResponseDTO, DeleteBoardResponseDTO } from './response/board';
 import { request } from 'http';
 import { response } from 'express';
 
@@ -52,8 +52,9 @@ const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string ) => `${API_DOMAIN
 const GET_FAVORITE_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite-list`;
 const GET_COMMENT_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/comment-list`;
 const POST_BOARD_URL = () =>`${API_DOMAIN}/board`;
-const POST_COMMENT_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/comment`
+const POST_COMMENT_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/comment`;
 const PUT_FAVORITE_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite`;
+const DELETE_BOARD_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}`;
 // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
 export const getBoardRequest = async (boardNumber: number | string) =>{
     const result = await axios.get(GET_BOARD_URL(boardNumber))
@@ -151,6 +152,20 @@ export const putFavoriteRequest = async (boardNumber : number | string, accessTo
             return responseBody;
         })
     return result;    
+}
+
+export const deleteBoardRequest = async(boardNumber : number | string, accessToken : string ) =>{
+    const result = await axios.delete(DELETE_BOARD_URL(boardNumber),authorization(accessToken))
+        .then(response=>{
+            const responseBody: DeleteBoardResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error =>{
+            if(!error.response) return null;
+            const responseBody : ResponseDTO = error.response.data;
+            return responseBody;
+        })
+    return result;
 }
 
 const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
