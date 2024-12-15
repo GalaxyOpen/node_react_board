@@ -9,13 +9,14 @@ import defaultProfileImage from 'assets/image/default-profile-image.png';
 import { useLoginUserStore } from 'stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BOARD_PATH, BOARD_UPDATE_PATH, MAIN_PATH, USER_PATH } from 'constant';
-import { getBoardRequest, GetCommentListRequest, getFavoriteListRequest, increaseViewCountRequest, putFavoriteRequest } from 'apis';
+import { getBoardRequest, GetCommentListRequest, getFavoriteListRequest, increaseViewCountRequest, postCommentRequest, putFavoriteRequest } from 'apis';
 import { ResponseDTO } from 'apis/response';
 import GetBoardResponseDTO from 'apis/response/board/get-board.response.DTO';
-import { GetCommentListResponseDTO, GetFavoriteListResponseDTO, IncresaeViewCountResponseDTO, PutFavoriteResponseDTO } from 'apis/response/board';
+import { GetCommentListResponseDTO, GetFavoriteListResponseDTO, IncresaeViewCountResponseDTO, PostCommentResponseDTO, PutFavoriteResponseDTO } from 'apis/response/board';
 
 import dayjs from 'dayjs';
 import { useCookies } from 'react-cookie';
+import { PostCommentRequestDTO } from 'apis/request/board';
 
 //       component: 게시물 상세 화면 컴포넌트           //
 export default function BoardDetail() {
@@ -217,6 +218,24 @@ export default function BoardDetail() {
       if(!boardNumber) return;
       getFavoriteListRequest(boardNumber).then(getFavoriteListResponse);
     }
+    //        function : Post Coimment Response 처리 함수         //
+    const postCommentResponse = (responseBody: PostCommentResponseDTO | ResponseDTO | null) =>{
+      if(!responseBody) return;
+      const { code } = responseBody;
+      if(code === "VF") alert('잘못된 접근입니다.');
+      if(code === "NB") alert('존재하지 않는 게시물입니다.');
+      if(code === "NU") alert('존재하지 않는 유저입니다.');
+      if(code === "NB") alert('존재하지 않는 게시물입니다.');
+      if(code === "AF") alert('인증에 실패했습니다.');
+      if(code === "DBE") alert('데이터베이스 오류입니다.');
+      if(code !== "SU" ) return;
+
+      setComment('');
+      
+      if(!boardNumber) return;
+      GetCommentListRequest(boardNumber).then(getCommentListResponse);
+    }
+
 
     //        event handler : 좋아요 상자 보기 클릭 이벤트 처리        //
     const onShowFavoriteClickHandler = () =>{
@@ -228,8 +247,11 @@ export default function BoardDetail() {
     }
     //        event handler : 댓글 작성 버튼 클릭 이벤트 처리        //
     const onCommentSubmitButtonClickHandler = () =>{
-      if(!comment) return;
-      alert('!!');
+      if(!comment || !boardNumber || !loginUser || !cookies.accessToken) return;
+      
+      const requestBody: PostCommentRequestDTO = {content: comment};
+      postCommentRequest(boardNumber, requestBody, cookies.accessToken).then(postCommentResponse);
+      
     }
     //        event handler : 댓글 변경 이벤트 처리        //
     const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) =>{
