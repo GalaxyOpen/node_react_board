@@ -2,6 +2,8 @@ package com.lkh.board_back.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,4 +29,7 @@ public interface FavoriteRepository extends JpaRepository<FavoriteEntity, Favori
         nativeQuery = true
     )
     List<GetFavoriteListResultSet> getFavoriteList(Integer boardNumber);
+    
+    @Transactional
+    void deleteByBoardNumber(Integer boardNumber);
 }
