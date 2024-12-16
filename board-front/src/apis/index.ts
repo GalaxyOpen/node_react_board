@@ -5,8 +5,6 @@ import { ResponseDTO } from './response';
 import { GetSignInUserResponseDTO } from './response/user';
 import { PostBoardRequestDTO, PostCommentRequestDTO } from './request/board';
 import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO, GetFavoriteListResponseDTO, GetCommentListResponseDTO, PutFavoriteResponseDTO, DeleteBoardResponseDTO } from './response/board';
-import { request } from 'http';
-import { response } from 'express';
 
 const DOMAIN = 'http://localhost:4000';
 const API_DOMAIN = `${DOMAIN}/api/v1`;
@@ -155,7 +153,7 @@ export const putFavoriteRequest = async (boardNumber : number | string, accessTo
 }
 
 export const deleteBoardRequest = async(boardNumber : number | string, accessToken : string ) =>{
-    const result = await axios.delete(DELETE_BOARD_URL(boardNumber),authorization(accessToken))
+    const result = await axios.delete(DELETE_BOARD_URL(boardNumber), authorization(accessToken))
         .then(response=>{
             const responseBody: DeleteBoardResponseDTO = response.data;
             return responseBody;
