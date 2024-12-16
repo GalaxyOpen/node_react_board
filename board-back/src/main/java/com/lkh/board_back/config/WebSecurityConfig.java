@@ -37,7 +37,9 @@ public class WebSecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
             .antMatchers("/","/api/v1/auth/**","api/v1/search/**","/file/**").permitAll()
+            .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
             .antMatchers(HttpMethod.GET, "/api/v1/board/**", "/api/v1/user/*").permitAll()
+            .antMatchers(HttpMethod.DELETE, "/api/v1/board/**").authenticated() // DELETE 요청 허용
             .anyRequest().authenticated().and()
             .exceptionHandling().authenticationEntryPoint(new FailedAuthenticationEntryPoint());
         
