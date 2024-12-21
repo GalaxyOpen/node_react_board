@@ -19,6 +19,8 @@ import { useCookies } from 'react-cookie';
 import { PostCommentRequestDTO } from 'apis/request/board';
 import { usePagination } from 'hooks';
 
+
+
 //       component: 게시물 상세 화면 컴포넌트           //
 export default function BoardDetail() {
 
@@ -290,7 +292,7 @@ export default function BoardDetail() {
       getFavoriteListRequest(boardNumber).then(getFavoriteListResponse);
       GetCommentListRequest(boardNumber).then(getCommentListResponse);
     },[boardNumber]);
-
+    
     //        render : 게시물 상세 화면 컴포넌트 렌더링      //
     return (
       <div id='board-detail-bottom'>
@@ -336,9 +338,9 @@ export default function BoardDetail() {
         {showComment &&
         <div className='board-detail-bottom-comment-box'>
           <div className='board-detail-bottom-comment-container'>
-            <div className='board-detail-bottom-comment-title'>{'댓글 '} <span className='emphasis'>{totalCommentCount}</span> </div>
+            <div className='board-detail-bottom-comment-title'>{'댓글 '} <span className='emphasis'>{totalCommentCount}</span></div>
             <div className='board-detail-bottom-comment-list-container'>
-              {viewList.map(item=> <CommentItem commentListItem={item} />)}
+              {viewList.map(item=><CommentItem commentListItem={item} />)}
             </div>
           </div>
           <div className='divder'></div>
@@ -372,7 +374,6 @@ export default function BoardDetail() {
   //        effect : 게시물 path variable이 바뀔 때마다 게시물 번호 조회 수 증가         //
   let effectFlag = false;
   useEffect(() => {
-    console.log("Effect triggered with boardNumber:", boardNumber);
     if(!boardNumber) return;
     if(effectFlag) return;
     

@@ -23,7 +23,7 @@ const usePagination = <T>(countPerPage: number) => {
         const FIRST_INDEX = countPerPage * (currentPage - 1); // 0이면 
         const LAST_INDEX = totalList.length > countPerPage * currentPage ? countPerPage * currentPage : totalList.length; // 2가 오게 되고 
         const viewPageList = totalList.slice(FIRST_INDEX, LAST_INDEX);
-        setViewList(viewList); 
+        setViewList(viewPageList); 
     }
     //              function : 보여줄 객체 리스트 추출 함수                 //
     const setViewPage = () =>{
