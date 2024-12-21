@@ -36,7 +36,7 @@ export default function Pagination(props: Props) {
     setCurrentSection(currentSection + 1);
   }
 
-  //        render : 게시물 상세 화면 컴포넌트 렌더링      //
+  //        render : 페이지내이션 화면 컴포넌트 렌더링      //
   return (
     <div id='pagination-wrapper'>
       <div className='pagination-change-link-box'>
@@ -46,13 +46,11 @@ export default function Pagination(props: Props) {
         <div className='pagination-change-link-text' onClick={onPreviousClickHandler}>{'이전'}</div>
       </div>  
       <div className='pagination-divider'>{'\|'}</div>
-
       {viewPageList.map(page=> 
       page === currentPage ?
       <div className='pagination-text-activate'>{page}</div> :
       <div className='pagination-text' onClick={()=>onPageClickHandler(page)}>{page}</div>
       )}
-      
       <div className='pagination-divider'>{'\|'}</div>
       <div className='pagination-change-link-box'>
         <div className='pagination-change-link-text' onClick={onNextClickHandler}>{'다음'}</div> 
