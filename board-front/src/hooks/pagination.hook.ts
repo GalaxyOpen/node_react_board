@@ -20,15 +20,15 @@ const usePagination = <T>(countPerPage: number) => {
 
     //              function : 보여줄 객체 리스트 추출 함수                 //
     const setView = () =>{
-        const FIRST_INDEX = countPerPage * (currentPage - 1); // 0이면 
-        const LAST_INDEX = totalList.length > countPerPage * currentPage ? countPerPage * currentPage : totalList.length; // 2가 오게 되고 
-        const viewPageList = totalList.slice(FIRST_INDEX, LAST_INDEX);
-        setViewList(viewPageList); 
+        const FIRST_INDEX = countPerPage * (currentPage - 1); // 0번 인덱스이면 
+        const LAST_INDEX = totalList.length > countPerPage * currentPage ? countPerPage * currentPage : totalList.length; // 마지막은 2번 인덱스가 오게 된다.  
+        const viewList = totalList.slice(FIRST_INDEX, LAST_INDEX);
+        setViewList(viewList); 
     }
-    //              function : 보여줄 객체 리스트 추출 함수                 //
+    //              function : 보여줄 페이지 리스트 추출 함수                 //
     const setViewPage = () =>{
         const FIRST_INDEX = 10 * (currentSection - 1);
-        const LAST_INDEX = totalPageList.length > 10 * currentPage ? 10 * currentSection : totalPageList.length ;
+        const LAST_INDEX = totalPageList.length > 10 * currentSection ? 10 * currentSection : totalPageList.length ;
         const viewPageList = totalPageList.slice(FIRST_INDEX, LAST_INDEX);
         setViewPageList(viewPageList);
     };
@@ -47,6 +47,7 @@ const usePagination = <T>(countPerPage: number) => {
         setCurrentSection(1);
 
         setView();
+        setViewPage();
     },[totalList]);
 
     //              effect : current page가 변경될 때마다 실행할 작업                 //
