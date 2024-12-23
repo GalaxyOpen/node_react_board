@@ -17,6 +17,7 @@ import { GetSignInUserResponseDTO } from 'apis/response/user';
 import { ResponseDTO } from 'apis/response';
 import { User } from 'types/interface';
 
+
 //    component: Application 컴포넌트          
 function App() {
   //        state : 로그인 유저 전역 상태        //
