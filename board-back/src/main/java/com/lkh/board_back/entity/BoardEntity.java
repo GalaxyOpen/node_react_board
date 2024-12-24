@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.lkh.board_back.dto.request.board.PatchBoardRequestDTO;
 import com.lkh.board_back.dto.request.board.PostBoardRequestDTO;
 
 import lombok.AllArgsConstructor;
@@ -62,6 +63,11 @@ public class BoardEntity {
     // 좋아요가 이미 있는 좋아요 눌렀을 때 좋아요 감소로직 
     public void decreaseFavoriteCount(){
         this.favoriteCount--;
+    }
+
+    public void patchBoard(PatchBoardRequestDTO DTO) {
+        this.title = DTO.getTitle();
+        this.content = DTO.getContent();
     }
     
 }
