@@ -21,7 +21,7 @@ public class PostBoardResponseDTO extends ResponseDTO {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    public static ResponseEntity<ResponseDTO> notExistUser(){
+    public static ResponseEntity<ResponseDTO> noExistUser(){
         ResponseDTO result = new ResponseDTO(ResponseCode.NOT_EXIST_USER, ResponseMessage.NOT_EXIST_USER);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
     }
