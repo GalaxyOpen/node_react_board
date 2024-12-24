@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 import { getBoardRequest } from 'apis';
 import { GetBoardResponseDTO } from 'apis/response/board';
 import { ResponseDTO } from 'apis/response';
+import { convertUrlsToFile } from 'utils';
 
 //       component: 게시물 수정 화면 컴포넌트           //
 export default function BoardWrite() {
@@ -47,10 +48,10 @@ export default function BoardWrite() {
     const { title, content, boardImageList, writerEmail}= responseBody as GetBoardResponseDTO;
     setTitle(title);
     setContent(content);
-    // convertToFile(boardImageList);
     setImageUrls(boardImageList);
+    convertUrlsToFile(boardImageList).then(boardImageFileList => setBoardImageFileList(boardImageFileList));
 
-    if(!loginUser || loginUser.email == writerEmail) {
+    if(!loginUser || loginUser.email !== writerEmail) {
       navigator(MAIN_PATH());
       return;
     }
