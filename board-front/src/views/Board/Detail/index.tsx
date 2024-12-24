@@ -46,10 +46,8 @@ export default function BoardDetail() {
 
     //        state : 작성자 여부 상태        //
     const [isWriter, setWriter] = useState<boolean>(false);
-
     //        state : board 상태        //
     const [board, setBoard] = useState<Board | null >(null);
-
     //        state : more 버튼 상태        //
     const [showMore, setShowMore] = useState<Boolean>(false);
 
@@ -93,26 +91,22 @@ export default function BoardDetail() {
 
       navigator(MAIN_PATH());
     }
-    
 
     //        event handler : 닉네임 클릭 이벤트 처리        //
     const onNicknameClickHandler = () =>{
       if(!board) return;
       navigator(USER_PATH(board.writerEmail));
     }    
-
     //        event handler : more 버튼 클릭 이벤트 처리        //
     const onMoreButtonClickHandler = () =>{
       setShowMore(!showMore);
     }
-
     //        event handler : 수정 버튼 클릭 이벤트 처리        //
     const onUpdateButtonClickHandler = () =>{
       if(!board || !loginUser) return; 
       if(loginUser.email !== board.writerEmail) return;
       navigator(BOARD_PATH() + '/' + BOARD_UPDATE_PATH(board.boardNumber)); 
     }
-
     //        event handler : 삭제 버튼 클릭 이벤트 처리        //
     const onDeleteButtonClickHandler = () =>{
       if(!boardNumber || !board || !loginUser || !cookies.accessToken) return; 
