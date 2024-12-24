@@ -6,6 +6,6 @@ export default interface Board{
      writeDateTime: string;
      writerEmail: string;
      writerNickname: string;
-     writerProifileImage: string;
+     writerProfileImage: string;
 }
 
