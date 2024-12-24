@@ -36,6 +36,7 @@ export default function BoardWrite() {
 
   //        function : Get Board Response 처리 함수         //
   const getBoardResponse = (responseBody: GetBoardResponseDTO | ResponseDTO | null) =>{
+    console.log('Response Body:', responseBody);
     if(!responseBody) return;
     const { code } = responseBody;
     if(code === "NB") alert('존재하지 않는 게시물입니다.');
@@ -156,7 +157,7 @@ export default function BoardWrite() {
           </div>
           <div className='board-update-images-box'>
             {imageUrls.map((imageUrl,index) => 
-              <div className='board-update-image-box'>
+              <div key={index} className='board-update-image-box'>
                 <img className='board-update-image' src={imageUrl}/>
                 <div className='icon-button image-close' onClick={()=>onImageCloseButtonClickHandler(index)}>
                   <div className='icon close-icon'></div>

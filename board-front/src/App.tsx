@@ -98,7 +98,3 @@ function App() {
 }
 
 export default App;
-function getSignInUserResponse(value: void): void | PromiseLike<void> {
-  throw new Error('Function not implemented.');
-}
-

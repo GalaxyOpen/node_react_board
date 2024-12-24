@@ -8,7 +8,7 @@ const boardMock: Board = {
     writeDateTime: '2024.12.07', 
     writerEmail: 'email3@email.com',
     writerNickname: '자바맨',
-    writerProifileImage: 'https://file3.instiz.net/data/file3/2018/03/02/0/9/2/09263434bbfbc6088df41747f5b0a902.jpg',
+    writerProfileImage: 'https://file3.instiz.net/data/file3/2018/03/02/0/9/2/09263434bbfbc6088df41747f5b0a902.jpg',
 }
 
 export default boardMock;
