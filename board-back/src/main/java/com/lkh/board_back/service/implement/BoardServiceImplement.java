@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.lkh.board_back.dto.request.board.PatchBoardRequestDTO;
 import com.lkh.board_back.dto.request.board.PostBoardRequestDTO;
 import com.lkh.board_back.dto.request.board.PostCommentRequestDTO;
 import com.lkh.board_back.dto.response.ResponseDTO;
@@ -14,6 +15,7 @@ import com.lkh.board_back.dto.response.board.GetBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.GetCommentListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
 import com.lkh.board_back.dto.response.board.IncreaseViewCountResponseDTO;
+import com.lkh.board_back.dto.response.board.PatchBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostCommentResponseDTO;
 import com.lkh.board_back.dto.response.board.PutFavoriteResponseDTO;
@@ -108,7 +110,7 @@ public class BoardServiceImplement implements BoardService {
         try{
             
             boolean existEmail = userRepository.existsByEmail(email);
-            if (!existEmail) return PostBoardResponseDTO.notExistUser();
+            if (!existEmail) return PostBoardResponseDTO.noExistUser();
 
             BoardEntity boardEntity = new BoardEntity(DTO, email);
             boardRepository.save(boardEntity);
@@ -187,6 +189,44 @@ public class BoardServiceImplement implements BoardService {
 
         return PutFavoriteResponseDTO.success();
     }
+    
+    @Override
+    public ResponseEntity<? super PatchBoardResponseDTO> patchBoard(PatchBoardRequestDTO DTO, Integer boardNumber, String email) {
+        
+        try {
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return PatchBoardResponseDTO.noExistBoard();
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return PatchBoardResponseDTO.noExistUser();
+
+            String writerEmail = boardEntity.getWriterEmail();
+            boolean isWriter = writerEmail.equals(email);
+            if(!isWriter) return PatchBoardResponseDTO.noPermission();
+
+            boardEntity.patchBoard(DTO);
+            boardRepository.save(boardEntity);
+
+            imageRepository.deleteByBoardNumber(boardNumber);
+            List<String> boardImageList = DTO.getBoardImageList();
+            List<ImageEntity> imageEntities = new ArrayList<>();
+
+            for(String image: boardImageList){
+                ImageEntity imageEntity = new ImageEntity(boardNumber, image);
+                imageEntities.add(imageEntity);
+            }
+
+            imageRepository.saveAll(imageEntities);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDTO.databaseError();
+        }
+        return PatchBoardResponseDTO.success();
+
+    }
+    
     @Override
     public ResponseEntity<? super IncreaseViewCountResponseDTO> increaseViewCount(Integer boardNumber) {
         
@@ -203,6 +243,7 @@ public class BoardServiceImplement implements BoardService {
 
         return IncreaseViewCountResponseDTO.success();
     }
+    
     @Override
     public ResponseEntity<? super DeleteBoardResponseDTO> deleteBoard(Integer boardNumber, String email) {
         
@@ -230,5 +271,6 @@ public class BoardServiceImplement implements BoardService {
         }
         return DeleteBoardResponseDTO.success();
     }
+
 
 }
