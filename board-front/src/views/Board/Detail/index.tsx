@@ -286,7 +286,7 @@ export default function BoardDetail() {
       GetCommentListRequest(boardNumber).then(getCommentListResponse);
     },[boardNumber]);
     
-    //        render : 게시물 상세 화면 컴포넌트 렌더링      //
+    //        render : 게시물 상세 하단 컴포넌트 렌더링      //
     return (
       <div id='board-detail-bottom'>
         <div className='board-detail-bottom-button-box'>

@@ -130,6 +130,7 @@ export default function BoardWrite() {
 
   //        effect : 첫 마운트 시 실행할 함수        //
   useEffect(()=>{
+    console.log('boardNumber : ', boardNumber); // 1번째 해결책 
     const accessToken = cookies.accessToken;
     if(!accessToken) {
       navigator(MAIN_PATH());
