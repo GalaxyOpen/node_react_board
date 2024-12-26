@@ -5,9 +5,9 @@ import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRIT
 import { useCookies } from 'react-cookie';
 import { useLoginUserStore } from 'stores';
 import useBoardStore from 'stores/board.store';
-import { fileUploadRequest, postBoardRequest } from 'apis';
-import { PostBoardRequestDTO } from 'apis/request/board';
-import { PostBoardResponseDTO } from 'apis/response/board';
+import { fileUploadRequest, patchBoardRequest, postBoardRequest } from 'apis';
+import { PatchBoardRequestDTO, PostBoardRequestDTO } from 'apis/request/board';
+import { PatchBoardResponseDTO, PostBoardResponseDTO } from 'apis/response/board';
 import { ResponseDTO } from 'apis/response';
 
 //          Component : 헤더 레이아웃           //
@@ -149,6 +149,9 @@ export default function Header() {
   //          component: 업로드 버튼 컴포넌트 렌더링       //
   const UploadButton = () =>{
 
+    //         state : 게시물 번호 path variable 상태          //
+    const { boardNumber } = useParams();
+    
     //         state : 게시물 상태          //
     const { title, content, boardImageFileList, resetBoard } = useBoardStore();
 
@@ -159,14 +162,25 @@ export default function Header() {
       if(code === 'DBE') alert('데이터 베이스 오류입니다.');
       if(code === 'AF' || code === 'NU') navigate(AUTH_PATH());
       if(code === 'VF') alert('제목과 내용은 필수로 입력하세요');
-      if(code === 'SU') {
-        resetBoard();
-        if(!loginUser) return;
-        const { email } = loginUser;
-        navigate(USER_PATH(email));
-      }
-      return;
+      if(code !== 'SU') return; 
+      
+      resetBoard();
+      if(!loginUser) return;
+      const { email } = loginUser;
+      navigate(USER_PATH(email));
+    }
 
+    //        function : patch board response 처리 함수        //
+    const patchBoardResponse = (responseBody: PatchBoardResponseDTO | ResponseDTO | null) =>{
+      if(!responseBody) return;
+      const { code } = responseBody;
+      if(code === 'DBE') alert('데이터 베이스 오류입니다.');
+      if(code === 'AF' || code === 'NU' || code === 'NB' || code === 'NP') navigate(AUTH_PATH());
+      if(code === 'VF') alert('제목과 내용은 필수로 입력하세요');
+      if(code !== 'SU') return;
+      
+      if(!boardNumber) return;
+      navigate(BOARD_PATH()+'/'+BOARD_DETAIL_PATH(boardNumber));
     }
 
     //          event handler : 업로드 버튼 클릭 이벤트 처리           //
@@ -184,11 +198,20 @@ export default function Header() {
         if (url) boardImageList.push(url);  
       };
 
-      const requestBody: PostBoardRequestDTO = {
-        title, content, boardImageList,
-      };
-      
-      postBoardRequest(requestBody, accessToken).then(postBoardResponse);
+      const isWriterPage = pathname === BOARD_PATH() + '/' + BOARD_WRITE_PATH();
+      if(isWriterPage){
+        const requestBody: PostBoardRequestDTO = {
+          title, content, boardImageList
+        };
+        postBoardRequest(requestBody, accessToken).then(postBoardResponse);
+
+      }else{
+        if(!boardNumber) return;
+        const requestBody: PatchBoardRequestDTO = {
+          title, content, boardImageList
+        }
+        patchBoardRequest(boardNumber, requestBody, accessToken).then(patchBoardResponse);
+      }       
     }
 
     //          Render : 업로드 버튼 컴포넌트 렌더링          //
