@@ -32,7 +32,7 @@ export default function BoardWrite() {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   
   //        function : 네비게이트 함수        //
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   //        function : Get Board Response 처리 함수         //
   const getBoardResponse = (responseBody: GetBoardResponseDTO | ResponseDTO | null) =>{
@@ -42,7 +42,7 @@ export default function BoardWrite() {
     if(code === "NB") alert('존재하지 않는 게시물입니다.');
     if(code === "DBE") alert('데이터베이스 오류입니다.');
     if(code !== "SU") {
-      navigator(MAIN_PATH());
+      navigate(MAIN_PATH());
       return;
     }
     
@@ -53,7 +53,7 @@ export default function BoardWrite() {
     convertUrlsToFile(boardImageList).then(boardImageFileList => setBoardImageFileList(boardImageFileList));
 
     if(!loginUser || loginUser.email !== writerEmail) {
-      navigator(MAIN_PATH());
+      navigate(MAIN_PATH());
       return;
     }
 
@@ -133,7 +133,7 @@ export default function BoardWrite() {
     console.log('boardNumber : ', boardNumber); // 1번째 해결책 
     const accessToken = cookies.accessToken;
     if(!accessToken) {
-      navigator(MAIN_PATH());
+      navigate(MAIN_PATH());
       return;
     }
     if(!boardNumber) return;

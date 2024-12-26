@@ -23,7 +23,7 @@ export default function Authentication() {
   console.log("첫번째 쿠키: ", cookie)
 
   //      function: 네비게이터 함수         //
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   //       component: sign in card 컴포넌트           //
   const SignInCard = () =>{
@@ -75,7 +75,7 @@ export default function Authentication() {
       // const expires = new Date(now + expirationTime * 1000);
       
       setCookie('accessToken', token, {expires, path:MAIN_PATH()});
-      navigator(MAIN_PATH());
+      navigate(MAIN_PATH());
       console.log("responsebody", responseBody)
     }
 
