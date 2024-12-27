@@ -14,15 +14,18 @@ import com.lkh.board_back.dto.response.board.DeleteBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.GetBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.GetCommentListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
+import com.lkh.board_back.dto.response.board.GetLatestBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.IncreaseViewCountResponseDTO;
 import com.lkh.board_back.dto.response.board.PatchBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostCommentResponseDTO;
 import com.lkh.board_back.dto.response.board.PutFavoriteResponseDTO;
 import com.lkh.board_back.entity.BoardEntity;
+import com.lkh.board_back.entity.BoardListViewEntity;
 import com.lkh.board_back.entity.CommentEntity;
 import com.lkh.board_back.entity.FavoriteEntity;
 import com.lkh.board_back.entity.ImageEntity;
+import com.lkh.board_back.repository.BoardListViewRepository;
 import com.lkh.board_back.repository.BoardRepository;
 import com.lkh.board_back.repository.CommentRepository;
 import com.lkh.board_back.repository.FavoriteRepository;
@@ -44,6 +47,7 @@ public class BoardServiceImplement implements BoardService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final FavoriteRepository favoriteRepository;
+    private final BoardListViewRepository boardListViewRepository;
 
 
     @Override
@@ -102,6 +106,22 @@ public class BoardServiceImplement implements BoardService {
             return ResponseDTO.databaseError();
         }
         return GetCommentListResponseDTO.success(resultSets);
+    }
+
+    @Override
+    public ResponseEntity<? super GetLatestBoardListResponseDTO> getLatestBoardList() {
+
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try{
+
+            boardListViewEntities = boardListViewRepository.findByOrderByWriteDatetimeDesc();
+            
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseDTO.databaseError();
+        }
+        return GetLatestBoardListResponseDTO.success(boardListViewEntities);
     }
 
     @Override
@@ -271,6 +291,5 @@ public class BoardServiceImplement implements BoardService {
         }
         return DeleteBoardResponseDTO.success();
     }
-
 
 }
