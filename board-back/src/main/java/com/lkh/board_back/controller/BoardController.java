@@ -21,6 +21,7 @@ import com.lkh.board_back.dto.response.board.DeleteBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.GetBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.GetCommentListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetLatestBoardListResponseDTO;
+import com.lkh.board_back.dto.response.board.GetTop3BoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
 import com.lkh.board_back.dto.response.board.IncreaseViewCountResponseDTO;
 import com.lkh.board_back.dto.response.board.PatchBoardResponseDTO;
@@ -75,8 +76,13 @@ public class BoardController {
         ResponseEntity<? super GetLatestBoardListResponseDTO> response = boardService.getLatestBoardList();
         return response;
     }
-    
 
+    @GetMapping("/top-3")
+    public ResponseEntity<? super GetTop3BoardListResponseDTO> getTop3BoardList() {
+        ResponseEntity<? super GetTop3BoardListResponseDTO> response = boardService.getTop3BoardList();
+        return response;
+    }
+    
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDTO> postBoard(
         @RequestBody @Valid PostBoardRequestDTO requestBody,
