@@ -20,6 +20,7 @@ import com.lkh.board_back.dto.request.board.PostCommentRequestDTO;
 import com.lkh.board_back.dto.response.board.DeleteBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.GetBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.GetCommentListResponseDTO;
+import com.lkh.board_back.dto.response.board.GetLatestBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
 import com.lkh.board_back.dto.response.board.IncreaseViewCountResponseDTO;
 import com.lkh.board_back.dto.response.board.PatchBoardResponseDTO;
@@ -29,6 +30,8 @@ import com.lkh.board_back.dto.response.board.PutFavoriteResponseDTO;
 import com.lkh.board_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/v1/board")
@@ -68,6 +71,13 @@ public class BoardController {
         ResponseEntity<? super IncreaseViewCountResponseDTO> response = boardService.increaseViewCount(boardNumber);
         return response;
     }
+
+    @GetMapping("latest-list")
+    public ResponseEntity<? super GetLatestBoardListResponseDTO> getLatestBoardList() {
+        ResponseEntity<? super GetLatestBoardListResponseDTO> response = boardService.getLatestBoardList();
+        return response;
+    }
+    
 
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDTO> postBoard(
