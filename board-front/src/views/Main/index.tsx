@@ -6,11 +6,12 @@ import { latestBoardListMock, top3BoardListMock } from 'mocks';
 import BoardItem from 'components/BoardItem';
 import { useNavigate } from 'react-router-dom';
 import { SEARCH_PATH } from 'constant';
-import { getLatestBoardRequest, getTop3BoardListRequest } from 'apis';
+import { getLatestBoardRequest, getPopularListRequest, getTop3BoardListRequest } from 'apis';
 import { GetLatestBoardListResponseDTO, GetTop3BoardListResponseDTO } from 'apis/response/board';
 import { ResponseDTO } from 'apis/response';
 import { usePagination } from 'hooks';
 import Pagination from 'components/Pagination';
+import { GetPopularListResponseDTO } from 'apis/response/search';
 
 //       component: 메인 화면 컴포넌트           //
 export default function Main() {
@@ -72,9 +73,20 @@ export default function Main() {
       const { code } = responseBody;
       if( code === 'DBE') alert ('데이터 베이스 오류입니다.');
       if ( code !== 'SU') return;
+
       const {latestList} = responseBody as GetLatestBoardListResponseDTO;
       setTotalList(latestList);
-    }
+    };
+    //        function : get popular list response 처리 함수        //
+    const getPopularListResponse =(responseBody: GetPopularListResponseDTO | ResponseDTO | null) =>{
+      if(!responseBody) return null;
+      const { code } = responseBody;
+      if( code === 'DBE') alert ('데이터 베이스 오류입니다.');
+      if ( code !== 'SU') return;
+
+      const { popularWordList } = responseBody as GetPopularListResponseDTO;
+      setpopularWordList(popularWordList);
+    };
 
     //        event handler: 인기 검색어 클릭 이벤트 처리         //
     const onPopularWordClickHandler=(word: string)=>{
@@ -83,8 +95,8 @@ export default function Main() {
 
     //        effect: 첫 마운트 시 실행될 함수         //
     useEffect(()=>{
-      getLatestBoardRequest().then(getLatestBoardResponse)
-      setpopularWordList(['welcome','to','see'])
+      getLatestBoardRequest().then(getLatestBoardResponse);
+      getPopularListRequest().then(getPopularListResponse);
     },[])
 
     //        render: 메인화면 하단 컴포넌트 렌더링         //
