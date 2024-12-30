@@ -6,6 +6,11 @@ import { latestBoardListMock, top3BoardListMock } from 'mocks';
 import BoardItem from 'components/BoardItem';
 import { useNavigate } from 'react-router-dom';
 import { SEARCH_PATH } from 'constant';
+import { getLatestBoardRequest, getTop3BoardListRequest } from 'apis';
+import { GetLatestBoardListResponseDTO, GetTop3BoardListResponseDTO } from 'apis/response/board';
+import { ResponseDTO } from 'apis/response';
+import { usePagination } from 'hooks';
+import Pagination from 'components/Pagination';
 
 //       component: 메인 화면 컴포넌트           //
 export default function Main() {
@@ -19,9 +24,20 @@ export default function Main() {
     //          state: 주간 Top3 게시물 리스트 상태         //
     const [top3BoardList, setTop3BoardList] = useState<BoardListItem[]>([]);
 
+    //          function : get Top 3 Board List Response 처리 함수        //
+    const getTop3BoardListResponse = (responseBody: GetTop3BoardListResponseDTO | ResponseDTO | null) =>{
+      if (!responseBody) return null;
+      const {code} = responseBody;
+      if (code === 'DBE') alert("데이터베이스 오류입니다.");
+      if (code !== 'SU') return;
+
+      const { top3List } =responseBody as GetTop3BoardListResponseDTO;
+      setTop3BoardList(top3List);
+    }
+
     //        effect: 첫 마운트 시 실행될 함수         //
     useEffect(()=>{
-      setTop3BoardList(top3BoardListMock);
+      getTop3BoardListRequest().then(getTop3BoardListResponse)
     },[])
 
     //        render : 메인 화면 상단 컴포넌트 렌더링      //
@@ -42,10 +58,23 @@ export default function Main() {
   //       component: 메인 화면 하단 컴포넌트           //
   const MainBottom = () =>{
 
-    //          state: 최신 게시물 리스트 상태(임시)         //
-    const [currentBoardList, setCurrentBoardList] = useState<BoardListItem[]>([]);
+    //          state: 페이지내이션 관련 상태         //
+    const { currentPage, currentSection, viewList, viewPageList, totalSection,
+      setCurrentPage, setCurrentSection, setTotalList                              
+    } = usePagination<BoardListItem>(5);
+    
     //          state: 인기 검색어 리스트 상태         //
     const [popularWordList, setpopularWordList] = useState<string[]>([]);
+
+    //        function : get latest board list response 처리 함수         //
+    const getLatestBoardResponse = (responseBody: GetLatestBoardListResponseDTO | ResponseDTO | null) =>{
+      if (!responseBody) return null;
+      const { code } = responseBody;
+      if( code === 'DBE') alert ('데이터 베이스 오류입니다.');
+      if ( code !== 'SU') return;
+      const {latestList} = responseBody as GetLatestBoardListResponseDTO;
+      setTotalList(latestList);
+    }
 
     //        event handler: 인기 검색어 클릭 이벤트 처리         //
     const onPopularWordClickHandler=(word: string)=>{
@@ -54,7 +83,7 @@ export default function Main() {
 
     //        effect: 첫 마운트 시 실행될 함수         //
     useEffect(()=>{
-      setCurrentBoardList(latestBoardListMock);
+      getLatestBoardRequest().then(getLatestBoardResponse)
       setpopularWordList(['welcome','to','see'])
     },[])
 
@@ -65,7 +94,7 @@ export default function Main() {
           <div className='main-bottom-title'>{'최신 게시물'}</div>
           <div className='main-bottom-contents-box'>
             <div className='main-bottom-current-contents'>
-              {currentBoardList.map(boardListItem => <BoardItem boardListItem={boardListItem} />)}              
+              {viewList.map(boardListItem => <BoardItem boardListItem={boardListItem} />)}              
             </div>
             <div className='main-bottom-popular-box'>
               <div className='main-bottom-popular-card'>
@@ -79,7 +108,14 @@ export default function Main() {
             </div>
           </div>
           <div className='main-bottom-pagination-box'></div>
-          {/* <Pagination /> */}
+          <Pagination
+            currentPage={currentPage}
+            currentSection={currentSection}
+            setCurrentPage={setCurrentPage}
+            setCurrentSection={setCurrentSection}
+            viewPageList={viewPageList}
+            totalSection={totalSection} 
+          />
         </div>
       </div>
     )
