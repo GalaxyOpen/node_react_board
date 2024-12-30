@@ -7,6 +7,7 @@ import DeleteBoardResponseDTO from './delete-board.response.DTO';
 import GetCommentListResponseDTO from './get-comment-list-response.dto';
 import GetFavoriteListResponseDTO from './get-favorite-list.response.dto';
 import IncresaeViewCountResponseDTO from './increase-view-count.response.dto';
+import GetTop3BoardListResonseDTO from './get-top-3-board-list.response.DTO';
 
 export type {
     GetBoardResponseDTO,
@@ -17,5 +18,6 @@ export type {
     DeleteBoardResponseDTO,
     GetCommentListResponseDTO,
     GetFavoriteListResponseDTO,
+    GetTop3BoardListResonseDTO,
     IncresaeViewCountResponseDTO
 }
