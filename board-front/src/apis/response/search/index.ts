@@ -1,4 +1,4 @@
-import GetPopularListResponseDTO from "./get-popular-list.response.DTO";
+import GetPopularListResponseDTO from './get-popular-list.response.DTO';
 
 export type {
     GetPopularListResponseDTO
