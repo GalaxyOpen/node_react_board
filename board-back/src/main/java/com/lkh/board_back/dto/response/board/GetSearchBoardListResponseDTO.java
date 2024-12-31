@@ -23,7 +23,7 @@ public class GetSearchBoardListResponseDTO extends ResponseDTO {
         this.searchList = BoardListItem.getList(boardListViewEntities);
     }
 
-    public ResponseEntity<GetSearchBoardListResponseDTO> success(List<BoardListViewEntity> boardListViewEntities) {
+    public static ResponseEntity<GetSearchBoardListResponseDTO> success(List<BoardListViewEntity> boardListViewEntities) {
         GetSearchBoardListResponseDTO result = new GetSearchBoardListResponseDTO(boardListViewEntities);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
