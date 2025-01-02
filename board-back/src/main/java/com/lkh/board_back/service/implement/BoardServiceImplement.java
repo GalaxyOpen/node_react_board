@@ -21,6 +21,7 @@ import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetLatestBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetSearchBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetTop3BoardListResponseDTO;
+import com.lkh.board_back.dto.response.board.GetUserBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.IncreaseViewCountResponseDTO;
 import com.lkh.board_back.dto.response.board.PatchBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostBoardResponseDTO;
@@ -177,6 +178,24 @@ public class BoardServiceImplement implements BoardService {
         return GetSearchBoardListResponseDTO.success(boardListViewEntities);
     }
     
+    @Override
+    public ResponseEntity<? super GetUserBoardListResponseDTO> getUserBoardList(String email) {
+        
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try {
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if(!existedUser) return GetUserBoardListResponseDTO.noExistUser();
+
+            boardListViewEntities = boardListViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDTO.databaseError();
+        }
+        return GetUserBoardListResponseDTO.success(boardListViewEntities);
+    }
 
     @Override
     public ResponseEntity<? super PostBoardResponseDTO> postBoard(PostBoardRequestDTO DTO, String email) {
@@ -345,4 +364,5 @@ public class BoardServiceImplement implements BoardService {
         }
         return DeleteBoardResponseDTO.success();
     }
+    
 }

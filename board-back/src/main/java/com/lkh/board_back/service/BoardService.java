@@ -12,6 +12,7 @@ import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetLatestBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetTop3BoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetSearchBoardListResponseDTO;
+import com.lkh.board_back.dto.response.board.GetUserBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.PostBoardResponseDTO;
 import com.lkh.board_back.dto.response.board.PostCommentResponseDTO;
 import com.lkh.board_back.dto.response.board.PutFavoriteResponseDTO;
@@ -25,6 +26,7 @@ public interface BoardService {
     ResponseEntity<? super GetLatestBoardListResponseDTO> getLatestBoardList();
     ResponseEntity<? super GetTop3BoardListResponseDTO> getTop3BoardList();
     ResponseEntity<? super GetSearchBoardListResponseDTO> getSearchBoardList(String searchword, String preSearchWord);
+    ResponseEntity<? super GetUserBoardListResponseDTO> getUserBoardList(String email);
     ResponseEntity<? super PostBoardResponseDTO> postBoard(PostBoardRequestDTO DTO, String email);
     ResponseEntity<? super PostCommentResponseDTO> postComment(PostCommentRequestDTO DTO, Integer boardNumber, String email);
     ResponseEntity<? super PutFavoriteResponseDTO> putFavorite(Integer boardNumber, String email);
