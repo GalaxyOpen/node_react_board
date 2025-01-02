@@ -23,6 +23,7 @@ import com.lkh.board_back.dto.response.board.GetCommentListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetLatestBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetTop3BoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetSearchBoardListResponseDTO;
+import com.lkh.board_back.dto.response.board.GetUserBoardListResponseDTO;
 import com.lkh.board_back.dto.response.board.GetFavoriteListResponseDTO;
 import com.lkh.board_back.dto.response.board.IncreaseViewCountResponseDTO;
 import com.lkh.board_back.dto.response.board.PatchBoardResponseDTO;
@@ -90,6 +91,14 @@ public class BoardController {
         @PathVariable(value = "preSearchWord", required = false) String preSearchWord
     ) {
         ResponseEntity<? super GetSearchBoardListResponseDTO> response = boardService.getSearchBoardList(searchWord, preSearchWord);
+        return response;
+    }
+
+    @GetMapping("/user-board-list/{email}")
+    public ResponseEntity<? super GetUserBoardListResponseDTO> getUserBoardList(
+        @PathVariable("email") String email
+    ){
+        ResponseEntity<? super GetUserBoardListResponseDTO> response = boardService.getUserBoardList(email);
         return response;
     }
     
