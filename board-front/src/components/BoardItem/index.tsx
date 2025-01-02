@@ -49,9 +49,9 @@ export default function BoardItem({boardListItem}:Props) {
           </div>
         </div>
       </div>
-      {boardTitleImage ! == null &&(
+      {boardTitleImage !== null &&(
           <div className='board-list-item-image-box'>
-          <div className='board-list-item-image' style={{backgroundImage:'url(${boardTitleImage})'}}></div>
+          <div className='board-list-item-image' style={{backgroundImage:`url(${boardTitleImage})`}}></div>
           </div>
       )}
 
