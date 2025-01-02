@@ -4,8 +4,9 @@ import { SignInResponseDTO, SignUpResponseDTO } from './response/auth';
 import { ResponseDTO } from './response';
 import { GetSignInUserResponseDTO } from './response/user';
 import { PatchBoardRequestDTO, PostBoardRequestDTO, PostCommentRequestDTO } from './request/board';
-import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO, GetFavoriteListResponseDTO, GetCommentListResponseDTO, PutFavoriteResponseDTO, DeleteBoardResponseDTO, PatchBoardResponseDTO, GetLatestBoardListResponseDTO, GetTop3BoardListResponseDTO } from './response/board';
-import { GetPopularListResponseDTO } from './response/search';
+import { PostBoardResponseDTO, GetBoardResponseDTO, IncresaeViewCountResponseDTO, GetFavoriteListResponseDTO, GetCommentListResponseDTO, PutFavoriteResponseDTO, DeleteBoardResponseDTO, PatchBoardResponseDTO, GetLatestBoardListResponseDTO, GetTop3BoardListResponseDTO, GetSearchBoardListResponseDTO } from './response/board';
+import { GetPopularListResponseDTO, GetRelationListResponseDTO } from './response/search';
+import { response } from 'express';
 
 const DOMAIN = 'http://localhost:4000';
 const API_DOMAIN = `${DOMAIN}/api/v1`;
@@ -49,6 +50,7 @@ export const signUpRequest = async (requestBody: SignUpRequestDTO) =>{
 const GET_BOARD_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}`; // 게시물 상세 페이지 특정 게시물 불러오기 API 연동
 const GET_LATEST_BOARD_LIST_URL = () => `${API_DOMAIN}/board/latest-list`;
 const GET_TOP_3_BOARD_LIST_URL = () => `${API_DOMAIN}/board/top-3`;
+const GET_SEARCH_BOARD_LIST_URL=(searchWord : string, preSearchWord: string | null )=> `${API_DOMAIN}/board/search-list/${searchWord}${preSearchWord ? '/' + preSearchWord : ''}`;
 const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string ) => `${API_DOMAIN}/board/${boardNumber}/increase-view-count`; // 조회 수 4개 증가 방지용 API 
 const GET_FAVORITE_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite-list`;
 const GET_COMMENT_LIST_URL = (boardNumber : number | string) => `${API_DOMAIN}/board/${boardNumber}/comment-list`;
@@ -98,6 +100,20 @@ export const getTop3BoardListRequest = async () => {
             return responseBody;
         });
     return result;
+}
+
+export const getSearchBoardListRequest = async (searchWord:string, preSearchWord : string | null) => {
+    const result = await axios.get(GET_SEARCH_BOARD_LIST_URL(searchWord, preSearchWord))
+        .then(response =>{
+            const responseBody: GetSearchBoardListResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error =>{
+            if(!error.response) return null;
+            const responseBody : ResponseDTO = error.response.data;
+            return responseBody;
+        });
+    return result;    
 }
 
 export const increaseViewCountRequest = async (boardNumber: number | string) =>{
@@ -213,11 +229,26 @@ export const deleteBoardRequest = async(boardNumber : number | string, accessTok
 }
 
 const GET_POPULAR_LIST_URL = () => `${API_DOMAIN}/search/popular-list`;
+const GET_RELATION_LIST_URL = (searchWord: string) => `${API_DOMAIN}/search/${searchWord}/relation-list`;
 
 export const getPopularListRequest = async () =>{
     const result = await axios.get(GET_POPULAR_LIST_URL())
         .then(response=>{
             const responseBody : GetPopularListResponseDTO = response.data;
+            return responseBody;
+        })
+        .catch(error =>{
+            if(!error.response) return null;
+            const responseBody : ResponseDTO = error.response.data;
+            return responseBody;
+        })
+    return result;    
+}
+
+export const getRelationListRequest = async (searchWord : string) =>{
+    const result = await axios.get(GET_RELATION_LIST_URL(searchWord)) 
+        .then(response =>{
+            const responseBody : GetRelationListResponseDTO = response.data;
             return responseBody;
         })
         .catch(error =>{
