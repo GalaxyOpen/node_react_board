@@ -11,6 +11,7 @@
     border: 1px solid rgba(0,0,0,0.5);
     border-radius: 30px;
     padding: 6px 20px;
+
     color: rgba(0,0,0,0.5);
 
     font-size: 14px;
@@ -27,14 +28,19 @@
     border-radius: 46px;
     width: 95px;
     height: 30px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     background-color: rgba(0,0,0,1);
+
     color: rgba(255,255,255,1);
+
     font-size:14px;
     font-weight: 500;
     line-height: 40%;
+
     cursor: pointer;
 }
 
@@ -44,12 +50,14 @@
 
 .black-large-full-button{
     border-radius: 46px;
+
     width:100%;
     height: 48px;
 
     display: flex;
     justify-content: center;
     align-items: center;
+
     background-color: rgba(0,0,0,1);
 
     color: rgba(255,255,255,1);
@@ -68,14 +76,19 @@
     border-radius: 46px;
     width: 95px;
     height: 30px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     background-color: rgba(0,0,0,0.4);
+
     color: rgba(255,255,255,1);
+
     font-size:14px;
     font-weight: 500;
     line-height: 40%;
+
     cursor: not-allowed;
 }
 
@@ -84,14 +97,19 @@
     border-radius: 46px;
     width: 93px;
     height: 28px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     background-color: rgba(255,255,255,1);
+
     color: rgba(0,0,0,0.5);
+
     font-size:14px;
     font-weight: 500;
     line-height: 40%;
+
     cursor: pointer;
 }
 
@@ -117,8 +135,18 @@
     justify-content: center;
 }
 
+.icon-box-large {
+    width:40px;
+    height:40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .icon-button {
     border-radius: 50% 50%;
+
     width: 24px;
     height: 24px;
 
@@ -139,7 +167,6 @@
 
     background-position: 50% 50%;
     background-size: 100% 100%;
-
 }
 
 .eye-light-off-icon {
@@ -220,4 +247,12 @@
 
 .comment-icon{
     background-image: url(assets/image/chat-light.png);
+}
+
+.edit-icon {
+    background-image: url(assets/image/edit-light.png);
+}
+
+.image-box-white-icon {
+    background-image: url(assets/image/image-box-white-light.png);
 }
