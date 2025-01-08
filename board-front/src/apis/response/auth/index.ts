@@ -1,5 +1,5 @@
-import SignInResponseDTO from './sign-in.response.dto';
-import SignUpResponseDTO from './sign-up.response.dto';
+import SignInResponseDTO from './sign-in.response.DTO';
+import SignUpResponseDTO from './sign-up.response.DTO';
 
 export type {
     SignUpResponseDTO,
