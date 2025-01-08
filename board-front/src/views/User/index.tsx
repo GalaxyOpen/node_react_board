@@ -7,6 +7,11 @@ import { latestBoardListMock } from 'mocks';
 import BoardItem from 'components/BoardItem';
 import { BOARD_PATH, BOARD_WRITE_PATH, MAIN_PATH, USER_PATH } from 'constant';
 import { useLoginUserStore } from 'stores';
+import { fileUploadRequest, getUserRequest, patchProfileImageReqeust } from 'apis';
+import { GetUserResponseDTO, PatchProfileImageResponseDTO } from 'apis/response/user';
+import { ResponseDTO } from 'apis/response';
+import { PatchProfileImageRequestDTO } from 'apis/request/user';
+import { useCookies } from 'react-cookie';
 
 //       component: 유저 화면 컴포넌트           //
 export default function UserPage() {
@@ -15,6 +20,8 @@ export default function UserPage() {
   const { userEmail } = useParams();
   //        state : 로그인 유저 상태        //
   const { loginUser } = useLoginUserStore();
+  //        state : 쿠키 상태         //
+  const [cookies, setCookies] = useCookies();
   //        state : 마이페이지 여부 상태        //
   const [isMyPage, setMyPage] = useState<boolean>(false);
 
@@ -35,6 +42,44 @@ export default function UserPage() {
     //        state :프로필 이미지 상태        //
     const [profileImage, setProfileImage] = useState<string  | null>(null);
 
+    //        function : get user response 처리 함수        //
+    const getUserResponse = (responseBody: GetUserResponseDTO | ResponseDTO | null) => {
+      if(!responseBody) return;
+      const { code } = responseBody;
+      if (code === 'NU') alert ('존재하지 않는 유저입니다.');
+      if (code === 'DBE') alert ('데이터베이스 오류입니다.');
+      if (code !== 'SU') {
+        navigate(MAIN_PATH());
+        return;
+      }
+
+      const { email, nickname, profileImage } = responseBody as GetUserResponseDTO; 
+      setNickname(nickname);
+      setProfileImage(profileImage);
+      const isMyPage = email === loginUser?.email;
+      setMyPage(isMyPage);
+    };
+
+    //        function : file upload response 처리 함수        //
+    const fileUploadResponse = (profileImage: string | null) =>{
+      if (!profileImage) return;
+      if(!cookies.accessToken) return;
+      const requestBody: PatchProfileImageRequestDTO = {profileImage};
+      patchProfileImageReqeust(requestBody, cookies.accessToken).then(patchProfileImageResponse);
+    };
+    //        function : patch profile image response 처리 함수          //
+    const patchProfileImageResponse = (responseBody: PatchProfileImageResponseDTO | ResponseDTO | null) =>{
+      if(!responseBody) return;
+      const { code } = responseBody;
+      if(code ==='AF') alert ('로그인 인증에 실패했습니다.');
+      if(code ==='NU') alert ('존재하지 않는 유저입니다.'); 
+      if(code ==='DBE') alert ('데이터 베이스 오류입니다.');
+      if(code !=='SU') return;
+
+      if(!userEmail) return;
+      getUserRequest(userEmail).then(getUserResponse);
+    };
+
     //        event handler : 프로필 박스 버튼 클릭 이벤트 처리         //
     const onProfileBoxClickHandler = () =>{
       if(!isMyPage) return;
@@ -47,15 +92,16 @@ export default function UserPage() {
       setChangeNickname(nickname);
       setNicknameChange(!isNicknameChange);
     };
-
     //        event handler : 프로필 이미지 변경 이벤트 처리         //
     const onProfileImageChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>{
       if(!event.target.files || !event.target.files?.length) return;
+
       const file = event.target.files[0];
       const data = new FormData();
       data.append('file',file);
-    };
 
+      fileUploadRequest(data).then(fileUploadResponse);
+    };
     //        event Handler : 닉네임 변경 이벤트 처리         //
     const onNicknameChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>{
       const { value } = event.target;
@@ -65,8 +111,7 @@ export default function UserPage() {
     //        Effect : user email path variable 변경 시 실행할 함수         //
     useEffect(()=>{
       if(!userEmail) return;
-      setNickname('I\'m pythonman');
-      setProfileImage('https://blog.kakaocdn.net/dn/bbTLnu/btshry66BH2/B4kENPa6CvSZNy0OgC7SQk/img.jpg');
+      getUserRequest(userEmail).then(getUserResponse);
     },[userEmail]);
 
     //        render : 유저 화면 상단 컴포넌트        //
